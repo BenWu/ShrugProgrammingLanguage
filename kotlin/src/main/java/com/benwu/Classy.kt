@@ -1,4 +1,4 @@
-package com.example
+package com.benwu
 
 import java.io.BufferedReader
 import java.io.FileNotFoundException
@@ -14,15 +14,13 @@ import java.util.*
  *    ¯\_(ツ)_/¯
  */
 
-// Tokens
-
-//enum class Token {
-//    NUMBER, COMMAND, EOF, ID
-//}
-
 val READ_TOKENS = mutableListOf(Token(Type.BOF, null), Token(Type.EOL, null))
 
 val SYMBOLS = hashSetOf(Symbol("lol", 696969))
+
+var currentSymbol = StringBuilder() // characters in the current id
+var lastSymbol = ""
+var currentValue = StringBuilder() // characters in the current val
 
 data class Token(val type: Type, val value: Any?)
 
@@ -68,11 +66,18 @@ fun main(args: Array<String>) {
             println(currentLine)
 
             for(currentChar in currentLine.iterator()) {
-                println(currentChar)
+                switchState(currentChar)
             }
-            println()
+            if (state == State.VAL) {
+                READ_TOKENS.add(Token(Type.NUMBER, currentValue.toString().toDouble()))
+            } else if (state == State.ID) {
+                READ_TOKENS.add(Token(Type.ID, currentSymbol.toString()))
+            }
+            READ_TOKENS.add(Token(Type.EOL, null))
+            state = State.EMPTY
             currentLine = input.readLine()
         }
+        READ_TOKENS.add(Token(Type.EOF, null))
     } catch(e: FileNotFoundException) {
         println("File not found")
         return
@@ -81,11 +86,56 @@ fun main(args: Array<String>) {
     } finally {
         input?.close()
     }
+    println("fam")
 }
 
+// tokenizer and symbolizer
 fun switchState(input: Char) : Boolean {
+    if(input == ' ' || input == '\t' || input == '\n') {
+        return true
+    }
     if (state == State.EMPTY) {
-
+        if (input in 'a'..'z' || input in 'A'..'Z') {
+            state = State.ID
+            currentSymbol = StringBuilder()
+            currentSymbol.append(input)
+            return true
+        } else if (input == LARM1) {
+            state = State.LARM1
+            return true
+        } else if (input in '0'..'9') {
+            state = State.VAL
+            currentValue = StringBuilder()
+            currentValue.append(input)
+            return true
+        }
+    } else if (state == State.ID) {
+        if (input in 'a'..'z' || input in 'A'..'Z') {
+            state = State.ID
+            currentSymbol.append(input)
+        } else if (input == LARM1) {
+            state = State.LARM1
+            lastSymbol = currentSymbol.toString()
+            READ_TOKENS.add(Token(Type.ID, lastSymbol))
+            return true
+        } else if (input in '0'..'9') {
+            state = State.VAL
+            lastSymbol = currentSymbol.toString()
+            currentValue = StringBuilder()
+            currentValue.append(input)
+            READ_TOKENS.add(Token(Type.ID, lastSymbol))
+            return true
+        }
+    } else if (state == State.VAL) {
+        if (input == LARM1) {
+            state = State.LARM1
+            READ_TOKENS.add(Token(Type.NUMBER, currentValue.toString().toDouble()))
+            return true
+        } else if (input in '0'..'9') {
+            state = State.VAL
+            currentValue.append(input)
+            return true
+        }
     } else if (state == State.LARM1 && input == LARM2) {
         state = State.LARM2
         return true
@@ -110,9 +160,6 @@ fun switchState(input: Char) : Boolean {
     } else if (state == State.RARM2 && input == RARM3) {
         state = State.EMPTY
         READ_TOKENS.add(Token(Type.SHRUG, null))
-        return true
-    } else if (state == State.RARM3 && input == '2') {
-        state = State.LARM2
         return true
     }
     return false
