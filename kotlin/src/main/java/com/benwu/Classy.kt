@@ -15,7 +15,7 @@ import java.util.*
  */
 
 val READ_TOKENS = mutableListOf(Token(Type.BOF, null), Token(Type.EOL, null))
-val TOKEN_LINES = mutableListOf(mutableListOf(Token(Type.BOF, null)))
+val TOKEN_LINES = mutableListOf(listOf(Token(Type.BOF, null)))
 
 val initializalization: Any? = 696969
 
@@ -74,6 +74,8 @@ fun main(args: Array<String>) {
                 else
                     """C:\Users\bw964\Desktop\testinput.txt"""))
 
+        println("INPUT:\n")
+
         var currentLine: String? = input.readLine();
         while(currentLine != null) {
             println(currentLine)
@@ -88,14 +90,20 @@ fun main(args: Array<String>) {
             } else if (state == State.ID) {
                 READ_TOKENS.add(Token(Type.ID, currentSymbol.toString()))
             }
-            READ_TOKENS.add(Token(Type.EOL, null))
+            if (!currentLine.isBlank()) {
+                READ_TOKENS.add(Token(Type.EOL, null))
+            }
             state = State.EMPTY
             currentLine = input.readLine()
             ++lineNumber
         }
         READ_TOKENS.add(Token(Type.EOF, null))
 
+        println("\n\n\nOUTPUT:\n")
+
         createSymbols()
+
+        processTokenizedLines()
     } catch(e: FileNotFoundException) {
         println("File not found")
         return
@@ -191,20 +199,23 @@ fun switchState(input: Char) : Boolean {
 
 // symbolizer and separating tokens by line
 fun createSymbols() {
+    TOKEN_LINES.clear()
     val currentLineTokens = mutableListOf(Token(Type.BOF, null))
     for(currentToken in READ_TOKENS) {
         if(currentToken.type == Type.EOL) {
-            TOKEN_LINES.add(ArrayList(currentLineTokens))
-            if (currentLineTokens.size in 2..3 && currentLineTokens[0].type == Type.SHRUG && currentLineTokens[1].type == Type.ID) {
-                val success: Any? = if (currentLineTokens.size == 2) {
-                    SYMBOLS.put(currentLineTokens[1].value.toString(), null)
-                } else if (currentLineTokens[2].type == Type.NUMBER) {
-                    SYMBOLS.put(currentLineTokens[1].value.toString(), currentLineTokens[2].value) // TODO: can re-define unintialized variables
-                } else {
-                    return
-                }
-                if (success != null) {
-                    throw Exception("Symbol ${currentLineTokens[1].value.toString()} already exists")
+            if (currentLineTokens.filter { it.type != Type.BOF && it.type != Type.EOF && it.type != Type.EOL}.isNotEmpty()) {
+                TOKEN_LINES.add(ArrayList(currentLineTokens.filter { it.type != Type.EOL }))
+                if (currentLineTokens.size in 1..2 && currentLineTokens[0].type == Type.ID) {
+                    val success: Any? = if (currentLineTokens.size == 1) {
+                        SYMBOLS.put(currentLineTokens[0].value.toString(), null)
+                    } else if (currentLineTokens[1].type == Type.NUMBER) {
+                        SYMBOLS.put(currentLineTokens[0].value.toString(), currentLineTokens[1].value) // TODO: can re-define unintialized variables
+                    } else {
+                        return
+                    }
+                    if (success != null) {
+                        throw Exception("Symbol ${currentLineTokens[1].value.toString()} already exists")
+                    }
                 }
             }
             currentLineTokens.clear()
@@ -212,4 +223,39 @@ fun createSymbols() {
             currentLineTokens.add(currentToken)
         }
     }
+}
+
+// start running file
+fun processTokenizedLines() {
+    for (line in TOKEN_LINES) {
+        val shrugsToStart = countShrugsToStart(line)
+
+        if(shrugsToStart == 0) {
+            println("Definition or assignment")
+        } else if(shrugsToStart == 1) {
+            println("Operation or end block")
+        }  else if(shrugsToStart == 2) {
+            println("Comparator")
+        } else if(shrugsToStart == 3) {
+            println("Conditional (no comparator)")
+        } else if(shrugsToStart == 4) {
+            println("Iteration")
+        } else if(shrugsToStart == 5) {
+            println("Conditional")
+        } else if(shrugsToStart == 6) {
+            println("Iteration with condition")
+        }
+    }
+}
+
+fun countShrugsToStart(line: List<Token>): Int {
+    var shrugs = 0
+    for (token in line) {
+        if (token.type == Type.SHRUG) {
+            ++shrugs
+        } else {
+            break
+        }
+    }
+    return shrugs
 }
