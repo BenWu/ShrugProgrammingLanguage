@@ -56,7 +56,7 @@ n ¯\\_(ツ)_/¯ 1
 
 ## logical operators follow a comparator
 
-###AND
+### AND
 
 ¯\\_(ツ)_/¯
 
