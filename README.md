@@ -1,30 +1,30 @@
 # ShrugProgrammingLanguage
 
-###declaration
+### declaration
 
 n
 
-###initialization
+### initialization
 
 n 1
 
 n 1 2 4 3 3 8
 
-###assignment
+### assignment
 
 n ¯\\_(ツ)_/¯ 1
 
-##math operators start with ¯\\_(ツ)_/¯
+## math operators start with ¯\\_(ツ)_/¯
 
-###addition
+### addition
 
 ¯\\_(ツ)_/¯ n 3
 
-###subtraction
+### subtraction
 
 ¯\\_(ツ)_/¯ n ¯\\_(ツ)_/¯ 3
 
-###multiplication
+### multiplication
 
 ¯\\_(ツ)_/¯ n ¯\\_(ツ)_/¯¯\\_(ツ)_/¯ 4
 
@@ -32,21 +32,21 @@ n ¯\\_(ツ)_/¯ 1
 
 ¯\\_(ツ)_/¯ n ¯\\_(ツ)_/¯¯\\_(ツ)_/¯¯\\_(ツ)_/¯ 4
 
-###modulus
+### modulus
 
 ¯\\_(ツ)_/¯ n ¯\\_(ツ)_/¯¯\\_(ツ)_/¯¯\\_(ツ)_/¯¯\\_(ツ)_/¯ 4
 
 ##comparators start with ¯\\_(ツ)_/¯¯\\_(ツ)_/¯
 
-###equality
+### equality
 
 ¯\\_(ツ)_/¯¯\\_(ツ)_/¯ n m
 
-###inequality
+### inequality
 
 ¯\\_(ツ)_/¯¯\\_(ツ)_/¯ n ¯\\_(ツ)_/¯ m
 
-###greater than
+### greater than
 
 ¯\\_(ツ)_/¯¯\\_(ツ)_/¯ n ¯\\_(ツ)_/¯¯\\_(ツ)_/¯ m
 
@@ -54,21 +54,21 @@ n ¯\\_(ツ)_/¯ 1
 
 ¯\\_(ツ)_/¯¯\\_(ツ)_/¯ n ¯\\_(ツ)_/¯¯\\_(ツ)_/¯¯\\_(ツ)_/¯ m
 
-##logical operators follow a comparator
+## logical operators follow a comparator
 
 ###AND
 
 ¯\\_(ツ)_/¯
 
-###OR
+### OR
 
 ¯\\_(ツ)_/¯¯\\_(ツ)_/¯
 
-###XOR
+### XOR
 
 ¯\\_(ツ)_/¯¯\\_(ツ)_/¯¯\\_(ツ)_/¯
 
-##conditional
+## conditional
 
 ¯\\_(ツ)_/¯¯\\_(ツ)_/¯¯\\_(ツ)_/¯ comparator 
 	statement1
@@ -78,7 +78,7 @@ n ¯\\_(ツ)_/¯ 1
 	statement2
 ¯\\_(ツ)_/¯ <- end conditional
 
-##iteration
+## iteration
 
 ¯\\_(ツ)_/¯¯\\_(ツ)_/¯¯\\_(ツ)_/¯¯\\_(ツ)_/¯ n <- run statement n times
 	statement
