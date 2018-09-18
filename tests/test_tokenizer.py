@@ -13,6 +13,9 @@ class TestLineParser(unittest.TestCase):
         empty_line = [(Tokens.EOL,)]
         self.assertEqual(empty_line, self.parser.parse(line))
 
+        line = '     '
+        self.assertEqual(empty_line, self.parser.parse(line))
+
     def test_shrug(self):
         line = '¯\_(ツ)_/¯'
         single_shrug = [(Tokens.SHRUG,), (Tokens.EOL,)]
@@ -53,16 +56,18 @@ class TestLineParser(unittest.TestCase):
         short_string = [(Tokens.STRING, 'a'), (Tokens.EOL,)]
         self.assertEqual(short_string, self.parser.parse(line))
 
-        line = '"a_bc_def_gh_i_jk_lmn_op_q_rs_tuv_wx_u_y_z"'
+        line = '"a bc def gh i jk lmn op q rs tuv wx u y z"'
         long_string = [
-            (Tokens.STRING, 'a_bc_def_gh_i_jk_lmn_op_q_rs_tuv_wx_u_y_z'),
+            (Tokens.STRING, 'a bc def gh i jk lmn op q rs tuv wx u y z'),
             (Tokens.EOL,)
         ]
         self.assertEqual(long_string, self.parser.parse(line))
 
-        line = '"fs\'d\'_f"_"_s_"f"_"fd__f"'
+        line = '"fs\'d\' f" " s " " fd_ f"'
         weird_string = [
-            (Tokens.STRING, 'fs\'d\'_f"_"_s_"f"_"fd__f'),
+            (Tokens.STRING, 'fs\'d\' f'),
+            (Tokens.STRING, ' s '),
+            (Tokens.STRING, ' fd_ f'),
             (Tokens.EOL,)
         ]
         self.assertEqual(weird_string, self.parser.parse(line))
@@ -83,6 +88,27 @@ class TestLineParser(unittest.TestCase):
                   (Tokens.SHRUG,), (Tokens.NUMBER, 4), (Tokens.ID, 'var'),
                   (Tokens.STRING, 'mm'), (Tokens.NUMBER, 434), (Tokens.EOL,)]
         self.assertEqual(tokens, self.parser.parse(line))
+
+    def test_join_strings(self):
+        # trivial
+        self.assertEqual([], self.parser.join_strings([]))
+        self.assertEqual([''], self.parser.join_strings(['']))
+        # unfinished strings
+        self.assertEqual(['"'], self.parser.join_strings(['"']))
+        self.assertEqual(['"affsdf'], self.parser.join_strings(['"affsdf']))
+        self.assertEqual(['"affsdf abc'],
+                         self.parser.join_strings(['"affsdf', 'abc']))
+        # proper strings
+        self.assertEqual(['"abc"'], self.parser.join_strings(['"abc"']))
+        self.assertEqual(['"abc "def ghi"'],
+                         self.parser.join_strings(['"abc', '"def', 'ghi"']))
+        self.assertEqual(
+            ['abc', '3', '"abc "def ghi"', 'hello', "ppp"],
+            self.parser.join_strings(
+                ['abc', '3', '"abc', '"def', 'ghi"', 'hello', "ppp"]))
+        self.assertEqual(
+            ['"     "'],
+            self.parser.join_strings(['"', '', '', '', '', '"']))
 
 
 if __name__ == '__main__':
