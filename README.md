@@ -1,20 +1,13 @@
 # ShrugProgrammingLanguage
 
-### declaration
+### print
 
 n
 
-### initialization
+### assignment
 
 n 1
 
-### assignment
-
-n ¯\\\_(ツ)\_/¯ 1
-
-### print
-
-¯\\\_(ツ)\_/¯ n ¯\\\_(ツ)\_/¯
 
 ## math operators start with ¯\\\_(ツ)\_/¯
 
