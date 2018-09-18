@@ -1,9 +1,9 @@
-from shrug_lang.tokenizer import LineParser
+from shrug_lang.tokenizer import Tokenizer
 
 if __name__ == '__main__':
-    parser = LineParser()
+    tokenizer = Tokenizer()
 
-    tokens = parser.parse(
-        'fadsasfd ¯\_(ツ)_/¯ ¯\_(ツ)_/¯ 34 fd3 3f "fs""da" "fsd"')
-
-    print(tokens)
+    while True:
+        line = input()
+        tokens = tokenizer.parse_line(line)
+        print(tokens)

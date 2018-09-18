@@ -13,23 +13,8 @@ class Tokens(Enum):
     INVALID = 8
 
 
-class ParserState(Enum):
-    EMPTY = 1
-    LARM1 = 2
-    LARM2 = 3
-    LARM3 = 4
-    FACE1 = 5
-    FACE2 = 6
-    FACE3 = 7
-    RARM1 = 8
-    RARM2 = 9
-    RARM3 = 10
-    VAL = 11
-    ID = 12
-
-
-class LineParser:
-    def parse(self, line: str):
+class Tokenizer:
+    def parse_line(self, line: str):
         if len(line) == 0:
             return [(Tokens.EOL,)]
         unparsed_tokens = filter(None, self.join_strings(line.split(' ')))
