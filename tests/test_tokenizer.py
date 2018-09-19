@@ -1,7 +1,7 @@
 import unittest
 
 from shrug_lang import tokenizer
-from shrug_lang.token import Token, Token
+from shrug_lang.shrug_token import TokenType, Token
 
 
 class TestLineParser(unittest.TestCase):
@@ -9,7 +9,7 @@ class TestLineParser(unittest.TestCase):
 
     def test_empty_line(self):
         line = ''
-        empty_line = [Token(Token.EOL)]
+        empty_line = [Token(TokenType.EOL)]
         self.assertEqual(empty_line, tokenizer.parse_line(line))
 
         line = '     '
@@ -17,77 +17,77 @@ class TestLineParser(unittest.TestCase):
 
     def test_shrug(self):
         line = '¯\_(ツ)_/¯'
-        single_shrug = [Token(Token.SHRUG), Token(Token.EOL)]
+        single_shrug = [Token(TokenType.SHRUG), Token(TokenType.EOL)]
         self.assertEqual(single_shrug, tokenizer.parse_line(line))
 
     def test_numbers(self):
         line = '2'
-        single_number1 = [Token(Token.NUMBER, 2), Token(Token.EOL)]
+        single_number1 = [Token(TokenType.NUMBER, 2), Token(TokenType.EOL)]
         self.assertEqual(single_number1, tokenizer.parse_line(line))
 
         line = '43435356'
-        single_number2 = [Token(Token.NUMBER, 43435356), Token(Token.EOL)]
+        single_number2 = [Token(TokenType.NUMBER, 43435356), Token(TokenType.EOL)]
         self.assertEqual(single_number2, tokenizer.parse_line(line))
 
         line = 'dfs3'
-        invalid_id1 = [Token(Token.INVALID, 'dfs3'), Token(Token.EOL)]
+        invalid_id1 = [Token(TokenType.INVALID, 'dfs3'), Token(TokenType.EOL)]
         self.assertEqual(invalid_id1, tokenizer.parse_line(line))
 
         line = 'abc%'
-        invalid_id2 = [Token(Token.INVALID, 'abc%'), Token(Token.EOL)]
+        invalid_id2 = [Token(TokenType.INVALID, 'abc%'), Token(TokenType.EOL)]
         self.assertEqual(invalid_id2, tokenizer.parse_line(line))
 
     def test_ids(self):
         line = 'a'
-        single_id1 = [Token(Token.ID, 'a'), Token(Token.EOL)]
+        single_id1 = [Token(TokenType.ID, 'a'), Token(TokenType.EOL)]
         self.assertEqual(single_id1, tokenizer.parse_line(line))
 
         line = 'variable'
-        single_id2 = [Token(Token.ID, 'variable'), Token(Token.EOL)]
+        single_id2 = [Token(TokenType.ID, 'variable'), Token(TokenType.EOL)]
         self.assertEqual(single_id2, tokenizer.parse_line(line))
 
     def test_strings(self):
         line = '""'
-        empty_string = [Token(Token.STRING, ''), Token(Token.EOL)]
+        empty_string = [Token(TokenType.STRING, ''), Token(TokenType.EOL)]
         self.assertEqual(empty_string, tokenizer.parse_line(line))
 
         line = '"a"'
-        short_string = [Token(Token.STRING, 'a'), Token(Token.EOL)]
+        short_string = [Token(TokenType.STRING, 'a'), Token(TokenType.EOL)]
         self.assertEqual(short_string, tokenizer.parse_line(line))
 
         line = '"a bc def gh i jk lmn op q rs tuv wx u y z"'
         long_string = [
-            Token(Token.STRING, 'a bc def gh i jk lmn op q rs tuv wx u y z'),
-            Token(Token.EOL)
+            Token(TokenType.STRING, 'a bc def gh i jk lmn op q rs tuv wx u y z'),
+            Token(TokenType.EOL)
         ]
         self.assertEqual(long_string, tokenizer.parse_line(line))
 
         line = '"fs\'d\' f" " s " " fd_ f"'
         weird_string = [
-            Token(Token.STRING, 'fs\'d\' f'),
-            Token(Token.STRING, ' s '),
-            Token(Token.STRING, ' fd_ f'),
-            Token(Token.EOL)
+            Token(TokenType.STRING, 'fs\'d\' f'),
+            Token(TokenType.STRING, ' s '),
+            Token(TokenType.STRING, ' fd_ f'),
+            Token(TokenType.EOL)
         ]
         self.assertEqual(weird_string, tokenizer.parse_line(line))
 
         line = '"a'
-        invalid_string = [Token(Token.INVALID, '"a'), Token(Token.EOL)]
+        invalid_string = [Token(TokenType.INVALID, '"a'), Token(TokenType.EOL)]
         self.assertEqual(invalid_string, tokenizer.parse_line(line))
 
         line = '"¯\_(ツ)_/¯"'
-        shrug_string = [Token(Token.STRING, '¯\_(ツ)_/¯'), Token(Token.EOL)]
+        shrug_string = [Token(TokenType.STRING, '¯\_(ツ)_/¯'), Token(TokenType.EOL)]
         self.assertEqual(shrug_string, tokenizer.parse_line(line))
 
     def test_complex(self):
         line = ('¯\_(ツ)_/¯ n ¯\_(ツ)_/¯ x ¯\_(ツ)_/¯ ¯\_(ツ)_/¯ ¯\_(ツ)_/¯'
                 ' 4 var "mm" 434')
-        tokens = [Token(Token.SHRUG, ), Token(Token.ID, 'n'),
-                  Token(Token.SHRUG), Token(Token.ID, 'x'),
-                  Token(Token.SHRUG, ), Token(Token.SHRUG),
-                  Token(Token.SHRUG), Token(Token.NUMBER, 4),
-                  Token(Token.ID, 'var'), Token(Token.STRING, 'mm'),
-                  Token(Token.NUMBER, 434), Token(Token.EOL)]
+        tokens = [Token(TokenType.SHRUG, ), Token(TokenType.ID, 'n'),
+                  Token(TokenType.SHRUG), Token(TokenType.ID, 'x'),
+                  Token(TokenType.SHRUG, ), Token(TokenType.SHRUG),
+                  Token(TokenType.SHRUG), Token(TokenType.NUMBER, 4),
+                  Token(TokenType.ID, 'var'), Token(TokenType.STRING, 'mm'),
+                  Token(TokenType.NUMBER, 434), Token(TokenType.EOL)]
         self.assertEqual(tokens, tokenizer.parse_line(line))
 
     def test_join_strings(self):
