@@ -1,12 +1,12 @@
 from typing import List
 
-from shrug_lang.token import Token
+from shrug_lang.shrug_token import Token, TokenType
 
 
 def parse_line(line: str):
     unparsed_tokens = filter(None, join_strings(line.split(' ')))
     tokens = [parse_token(unparsed) for unparsed in unparsed_tokens]
-    tokens.append(Token(Token.EOL))
+    tokens.append(Token(TokenType.EOL))
     return tokens
 
 
@@ -39,15 +39,15 @@ def join_strings(unparsed_tokens: List[str]):
 def parse_token(unparsed_token: str):
     """Get token from given string"""
     if unparsed_token == '¯\_(ツ)_/¯':
-        return Token(Token.SHRUG)
+        return Token(TokenType.SHRUG)
     if (len(unparsed_token) >= 2 and
             unparsed_token.startswith('"') and
             unparsed_token.endswith('"')):
-        return Token(Token.STRING, unparsed_token[1:-1])
+        return Token(TokenType.STRING, unparsed_token[1:-1])
     if unparsed_token.isalpha():
-        return Token(Token.ID, unparsed_token)
+        return Token(TokenType.ID, unparsed_token)
     if unparsed_token.isnumeric():
-        return Token(Token.NUMBER, int(unparsed_token))
-    return Token(Token.INVALID, unparsed_token)
+        return Token(TokenType.NUMBER, int(unparsed_token))
+    return Token(TokenType.INVALID, unparsed_token)
 
 

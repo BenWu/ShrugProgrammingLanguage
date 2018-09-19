@@ -1,5 +1,5 @@
 from shrug_lang import tokenizer
-from shrug_lang.token_parser import TokenParser
+from shrug_lang.token_parser import TokenError, TokenParser
 
 if __name__ == '__main__':
     parser = TokenParser()
@@ -7,6 +7,9 @@ if __name__ == '__main__':
     while True:
         line = input()
         tokens = tokenizer.parse_line(line)
-        for token in tokens:
-            print(token)
-            parser.next_token(token)
+        print(tokens)
+        try:
+            for token in tokens:
+                parser.next_token(token)
+        except TokenError as e:
+            print(f'TokenError: {e}')

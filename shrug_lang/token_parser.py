@@ -1,6 +1,6 @@
 from enum import Enum
 
-from shrug_lang.token import Token
+from shrug_lang.shrug_token import Token, TokenType
 
 
 class ParserState(Enum):
@@ -34,9 +34,11 @@ class TokenParser:
         self.assign_to = None
         self.current_value = None
 
-    def next_token(self, token):
-        if token.type == Token.EOL:
+    def next_token(self, token: Token):
+        if token.type == TokenType.EOL:
             if self.state == ParserState.EMPTY:
+                if self.assign_to:
+                    print(self.get_value(self.assign_to))
                 return
             if self.state == ParserState.END:
                 if self.assign_to:
@@ -48,14 +50,17 @@ class TokenParser:
             # Not in valid state to end line
             raise TokenError('Unexpected end-of-line')
 
+        if token.type == TokenType.INVALID:
+            raise TokenError(f'Invalid token {token.value}')
+
         if self.state == ParserState.EMPTY:
-            if token.type == Token.ID:
-                self.assign_to = token[1]
+            if token.type == TokenType.ID:
+                self.assign_to = token.value
                 self.current_value = self.get_value(token.value)
-            elif token.type == Token.NUMBER or Token.STRING:
+            elif token.type == TokenType.NUMBER or TokenType.STRING:
                 self.state = ParserState.END
                 self.current_value = token.value
-            elif token.type == Token.SHRUG:
+            elif token.type == TokenType.SHRUG:
                 self.state = ParserState.MATH
         else:
             pass
