@@ -95,12 +95,28 @@ class WtfError(Exception):
 class Operation:
     @staticmethod
     def check_for_undefined(val1, val2):
+        """Check for undefined values and raise an error with correct message"""
         if val1[0] is None and val2[0] is None:
             raise ValueError(f'Undefined values {val1[1]} and {val2[1]}')
         if val1[0] is None:
             raise ValueError(f'Undefined values {val1[1]}')
         if val2[0] is None:
             raise ValueError(f'Undefined values {val2[1]}')
+
+    @staticmethod
+    def check_non_numbers(val1, val2, operation_type):
+        """Raise an error if either value is not an int"""
+        val1 = val1[0]
+        val2 = val2[0]
+        if isinstance(val1, str) and isinstance(val2, str):
+            raise TypeError(
+                f'Unsupported {operation_type} types: string and string')
+        if isinstance(val1, str) and isinstance(val2, int):
+            raise TypeError(
+                f'Unsupported {operation_type} types: str and number')
+        if isinstance(val1, int) and isinstance(val2, str):
+            raise TypeError(
+                f'Unsupported {operation_type} types: number and str')
 
     @staticmethod
     def add(val1, val2):
@@ -124,65 +140,38 @@ class Operation:
     @staticmethod
     def subtract(val1, val2):
         Operation.check_for_undefined(val1, val2)
-        val1 = val1[0]
-        val2 = val2[0]
-        if isinstance(val1, str) and isinstance(val2, str):
-            raise TypeError('Unsupported subtraction types: string and string')
-        if isinstance(val1, str) and isinstance(val2, int):
-            raise TypeError('Unsupported subtraction types: str and number')
-        if isinstance(val1, int) and isinstance(val2, str):
-            raise TypeError('Unsupported subtraction types: number and str')
-
-        return val1 - val2
+        Operation.check_non_numbers(val1, val2, 'subtraction')
+        return val1[0] - val2[0]
 
     @staticmethod
     def multiply(val1, val2):
         Operation.check_for_undefined(val1, val2)
-        val1 = val1[0]
-        val2 = val2[0]
-        if isinstance(val1, str) and isinstance(val2, str):
+        if isinstance(val1[0], str) and isinstance(val2[0], str):
             raise TypeError('Unsupported multiplication types: '
                             'string and string')
-
-        return val1 * val2
+        return val1[0] * val2[0]
 
     @staticmethod
     def divide(val1, val2):
         Operation.check_for_undefined(val1, val2)
-        val1 = val1[0]
-        val2 = val2[0]
-        if isinstance(val1, str) and isinstance(val2, str):
-            raise TypeError('Unsupported division types: string and string')
-        if isinstance(val1, str) and isinstance(val2, int):
-            raise TypeError('Unsupported division types: str and number')
-        if isinstance(val1, int) and isinstance(val2, str):
-            raise TypeError('Unsupported division types: number and str')
-
-        return val1 // val2
+        Operation.check_non_numbers(val1, val2, 'division')
+        return val1[0] // val2[0]
 
     @staticmethod
     def modulus(val1, val2):
         Operation.check_for_undefined(val1, val2)
-        val1 = val1[0]
-        val2 = val2[0]
-        if isinstance(val1, str) and isinstance(val2, str):
-            raise TypeError('Unsupported modulus types: string and string')
-        if isinstance(val1, str) and isinstance(val2, int):
-            raise TypeError('Unsupported modulus types: str and number')
-        if isinstance(val1, int) and isinstance(val2, str):
-            raise TypeError('Unsupported modulus types: number and str')
-
-        return val1 % val2
+        Operation.check_non_numbers(val1, val2, 'modulus')
+        return val1[0] % val2[0]
 
 
 class TokenParser:
     def __init__(self):
         self.math_operations = {
-            ParserState.ADDITION: self.add_values,
-            ParserState.SUBTRACTION: self.subtract_values,
-            ParserState.MULTIPLICATION: self.multiply_values,
-            ParserState.DIVISION: self.divide_values,
-            ParserState.MODULUS: self.mod_values,
+            ParserState.ADDITION: Operation.add,
+            ParserState.SUBTRACTION: Operation.subtract,
+            ParserState.MULTIPLICATION: Operation.multiply,
+            ParserState.DIVISION: Operation.divide,
+            ParserState.MODULUS: Operation.modulus,
         }
         self.state_transformer = StateTransformer()
         self.value_map = {}
@@ -240,11 +229,11 @@ class TokenParser:
             elif self.state in self.math_operations.keys():
                 if token.type == TokenType.ID:
                     self.value2 = (self.get_value(token.value), token.value)
-                    self.math_operations[self.state]()
+                    self.current_value = self.math_operations[self.state](self.value1, self.value2)
                 elif (token.type == TokenType.NUMBER or
                       token.type == TokenType.STRING):
                     self.value2 = (token.value,)
-                    self.math_operations[self.state]()
+                    self.current_value = self.math_operations[self.state](self.value1, self.value2)
 
             self.next_state(token)
 
@@ -260,18 +249,3 @@ class TokenParser:
 
     def set_value(self, key, value):
         self.value_map[key] = value
-
-    def add_values(self):
-        self.current_value = Operation.add(self.value1, self.value2)
-
-    def subtract_values(self):
-        self.current_value = Operation.subtract(self.value1, self.value2)
-
-    def multiply_values(self):
-        self.current_value = Operation.multiply(self.value1, self.value2)
-
-    def divide_values(self):
-        self.current_value = Operation.divide(self.value1, self.value2)
-
-    def mod_values(self):
-        self.current_value = Operation.modulus(self.value1, self.value2)
