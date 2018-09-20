@@ -4,6 +4,24 @@ from shrug_lang.shrug_token import TokenType, Token
 from shrug_lang.token_parser import TokenParser
 
 
+class TokenGenerator:
+    @staticmethod
+    def get_eol():
+        return Token(TokenType.EOL)
+
+    @staticmethod
+    def get_id(name='a'):
+        return Token(TokenType.ID, name)
+
+    @staticmethod
+    def get_number(value=123):
+        return Token(TokenType.NUMBER, value)
+
+    @staticmethod
+    def get_string(value='abc'):
+        return Token(TokenType.STRING, value)
+
+
 class TestTokenParser(unittest.TestCase):
     """Token parser should give correct output based on series of tokens"""
 
@@ -14,25 +32,25 @@ class TestTokenParser(unittest.TestCase):
         return [self.token_parser.next_token(token) for token in tokens]
 
     def test_single_int_output(self):
-        tokens = [Token(TokenType.NUMBER, 5), Token(TokenType.EOL)]
+        tokens = [TokenGenerator.get_number(5), TokenGenerator.get_eol()]
         expected = [None, 5]
         self.assertEqual(expected, self.process_tokens(tokens))
 
     def test_single_string_output(self):
-        tokens = [Token(TokenType.STRING, 'abc'), Token(TokenType.EOL)]
+        tokens = [TokenGenerator.get_string('abc'), TokenGenerator.get_eol()]
         expected = [None, 'abc']
         self.assertEqual(expected, self.process_tokens(tokens))
 
     def test_output_unassigned(self):
-        tokens = [Token(TokenType.ID), Token(TokenType.EOL)]
+        tokens = [TokenGenerator.get_id(), TokenGenerator.get_eol()]
         expected = [None, None]
         self.assertEqual(expected, self.process_tokens(tokens))
 
     def test_assign_int_and_output(self):
-        tokens = [Token(TokenType.ID, 'a'), Token(TokenType.NUMBER, 98),
-                  Token(TokenType.EOL), Token(TokenType.ID, 'a'),
-                  Token(TokenType.EOL)]
-        expected = [None, None, None, None, 98]
+        tokens = [TokenGenerator.get_id(), TokenGenerator.get_number(123),
+                  TokenGenerator.get_eol(), TokenGenerator.get_id(),
+                  TokenGenerator.get_eol()]
+        expected = [None, None, None, None, 123]
         self.assertEqual(expected, self.process_tokens(tokens))
 
 
