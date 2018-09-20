@@ -95,7 +95,7 @@ class WtfError(Exception):
 class Operation:
     @staticmethod
     def check_for_undefined(val1, val2):
-        """Check for undefined values and raise an error with correct message"""
+        """Raise an error with correct message if either value is undefined"""
         if val1[0] is None and val2[0] is None:
             raise ValueError(f'Undefined values {val1[1]} and {val2[1]}')
         if val1[0] is None:
@@ -193,18 +193,19 @@ class TokenParser:
     def next_token(self, token: Token):
         try:
             if token.type == TokenType.EOL:
-                if self.state == ParserState.EMPTY:
-                    if self.assign_to:
-                        print(self.get_value(self.assign_to))
+                try:
+                    if self.state == ParserState.EMPTY:
+                        if self.assign_to:
+                            return self.get_value(self.assign_to)
+                        return
+                    if self.state == ParserState.END:
+                        if self.assign_to:
+                            self.set_value(self.assign_to, self.current_value)
+                        else:
+                            return self.current_value
+                        return
+                finally:
                     self.reset_state()
-                    return
-                if self.state == ParserState.END:
-                    if self.assign_to:
-                        self.set_value(self.assign_to, self.current_value)
-                    else:
-                        print(self.current_value)
-                    self.reset_state()
-                    return
                 # Not in valid state to end line
                 raise TokenError('Unexpected end-of-line')
 

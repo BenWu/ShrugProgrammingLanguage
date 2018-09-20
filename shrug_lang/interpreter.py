@@ -3,6 +3,8 @@ from sys import stderr
 from shrug_lang import tokenizer
 from shrug_lang.token_parser import TokenError, TokenParser
 
+# ¯\_(ツ)_/¯
+
 if __name__ == '__main__':
     parser = TokenParser()
 
@@ -11,7 +13,9 @@ if __name__ == '__main__':
         tokens = tokenizer.parse_line(line)
         try:
             for token in tokens:
-                parser.next_token(token)
+                val = parser.next_token(token)
+                if val is not None:
+                    print(val)
         except TokenError as e:
             print(f'TokenError: {e}', file=stderr)
         except TypeError as e:
