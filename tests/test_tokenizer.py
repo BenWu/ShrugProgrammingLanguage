@@ -4,7 +4,7 @@ from shrug_lang import tokenizer
 from shrug_lang.shrug_token import TokenType, Token
 
 
-class TestLineParser(unittest.TestCase):
+class TestTokenizer(unittest.TestCase):
     """Line parser class should return correctly read tokens"""
 
     def test_empty_line(self):

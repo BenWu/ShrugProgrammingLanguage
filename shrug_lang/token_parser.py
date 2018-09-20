@@ -215,7 +215,6 @@ class TokenParser:
             if self.state == ParserState.EMPTY:
                 if token.type == TokenType.ID:
                     self.assign_to = token.value
-                    self.current_value = self.get_value(token.value)
                 elif (token.type == TokenType.NUMBER or
                       token.type == TokenType.STRING):
                     self.current_value = token.value
