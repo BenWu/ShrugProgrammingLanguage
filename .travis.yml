@@ -5,8 +5,8 @@ python:
 dist: xenial
 sudo: true
 install:
-  - pip install -r requirements.dev.txt
+  - make install
 script:
-  - nosetests --with-coverage --cover-package=shrug_lang
+  - make test
 after_success:
   - coveralls
