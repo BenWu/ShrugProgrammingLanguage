@@ -1,69 +1,77 @@
-# ShrugProgrammingLanguage
+# ShrugProgrammingLanguage [![Build Status](https://travis-ci.org/Ben-Wu/ShrugProgrammingLanguage.svg?branch=master)](https://travis-ci.org/Ben-Wu/ShrugProgrammingLanguage) [![Coverage Status](https://coveralls.io/repos/github/Ben-Wu/ShrugProgrammingLanguage/badge.svg)](https://coveralls.io/github/Ben-Wu/ShrugProgrammingLanguage)
 
-### print
+##### WORK IN PROGRESS
+
+Interpreter for the Shrug Programming Language
+
+Shrug is a imperative, dynamically-typed, very very high-level, general-purpose programming language
+
+## Language spec
+
+#### print
 
 n
 
-### assignment
+#### assignment
 
 n 1
 
 
-## math operators start with ¯\\\_(ツ)\_/¯
+### math operators start with ¯\\\_(ツ)\_/¯
 
-### addition
+#### addition
 
 ¯\\\_(ツ)\_/¯ n 3
 
-### subtraction
+#### subtraction
 
 ¯\\\_(ツ)\_/¯ n ¯\\\_(ツ)\_/¯ 3
 
-### multiplication
+#### multiplication
 
 ¯\\\_(ツ)\_/¯ n ¯\\\_(ツ)\_/¯¯\\\_(ツ)\_/¯ 4
 
-### division
+#### division
 
 ¯\\\_(ツ)\_/¯ n ¯\\\_(ツ)\_/¯¯\\\_(ツ)\_/¯¯\\\_(ツ)\_/¯ 4
 
-### modulus
+#### modulus
 
 ¯\\\_(ツ)\_/¯ n ¯\\\_(ツ)\_/¯¯\\\_(ツ)\_/¯¯\\\_(ツ)\_/¯¯\\\_(ツ)\_/¯ 4
 
-## comparators start with ¯\\\_(ツ)\_/¯¯\\\_(ツ)\_/¯
+### comparators start with ¯\\\_(ツ)\_/¯¯\\\_(ツ)\_/¯
 
-### equality
+#### equality
 
 ¯\\\_(ツ)\_/¯¯\\\_(ツ)\_/¯ n m
 
-### inequality
+#### inequality
 
 ¯\\\_(ツ)\_/¯¯\\\_(ツ)\_/¯ n ¯\\\_(ツ)\_/¯ m
 
-### greater than
+#### greater than
 
 ¯\\\_(ツ)\_/¯¯\\\_(ツ)\_/¯ n ¯\\\_(ツ)\_/¯¯\\\_(ツ)\_/¯ m
 
-### less than
+#### less than
 
 ¯\\\_(ツ)\_/¯¯\\\_(ツ)\_/¯ n ¯\\\_(ツ)\_/¯¯\\\_(ツ)\_/¯¯\\\_(ツ)\_/¯ m
 
-## logical operators follow a comparator
+### logical operators follow a comparator
 
-### AND
+#### AND
 
 ¯\\\_(ツ)\_/¯
 
-### OR
+#### OR
 
 ¯\\\_(ツ)\_/¯¯\\\_(ツ)\_/¯
 
-### XOR
+#### XOR
 
 ¯\\\_(ツ)\_/¯¯\\\_(ツ)\_/¯¯\\\_(ツ)\_/¯
 
-## conditional
+### conditional
 
 ¯\\\_(ツ)\_/¯¯\\\_(ツ)\_/¯¯\\\_(ツ)\_/¯ comparator 
 	statement1
@@ -73,7 +81,7 @@ n 1
 	statement2
 ¯\\\_(ツ)\_/¯ <- end conditional
 
-## iteration
+### iteration
 
 ¯\\\_(ツ)\_/¯¯\\\_(ツ)\_/¯¯\\\_(ツ)\_/¯¯\\\_(ツ)\_/¯ n <- run statement n times
 	statement
