@@ -7,4 +7,6 @@ sudo: true
 install:
   - pip install -r requirements.dev.txt
 script:
-  - nosetests
+  - nosetests --with-coverage --cover-package=shrug_lang
+after_success:
+  - coveralls

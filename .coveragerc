@@ -1,0 +1,9 @@
+[run]
+source = shrug_lang
+[report]
+omit =
+    */interpreter.py
+exclude_lines =
+	pragma: no cover
+    if __name__ == .__main__.:
+    raise WtfError
