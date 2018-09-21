@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import Union
 
 from shrug_lang.shrug_token import Token, TokenType
 
@@ -80,7 +81,7 @@ class StateTransformer:
             },
         }
 
-    def next_state(self, state, token):
+    def next_state(self, state: ParserState, token: Token) -> ParserState:
         try:
             return self.state_transformer[state][token.type]
         except KeyError:
@@ -229,11 +230,13 @@ class TokenParser:
             elif self.state in self.math_operations.keys():
                 if token.type == TokenType.ID:
                     self.value2 = (self.get_value(token.value), token.value)
-                    self.current_value = self.math_operations[self.state](self.value1, self.value2)
+                    self.current_value = (self.math_operations[self.state]
+                                          (self.value1, self.value2))
                 elif (token.type == TokenType.NUMBER or
                       token.type == TokenType.STRING):
                     self.value2 = (token.value,)
-                    self.current_value = self.math_operations[self.state](self.value1, self.value2)
+                    self.current_value = (self.math_operations[self.state]
+                                          (self.value1, self.value2))
 
             self.next_state(token)
 
@@ -241,11 +244,11 @@ class TokenParser:
             self.reset_state()
             raise e
 
-    def next_state(self, token):
+    def next_state(self, token: Token):
         self.state = self.state_transformer.next_state(self.state, token)
 
-    def get_value(self, key):
+    def get_value(self, key: str) -> Union[int, str, None]:
         return self.value_map.get(key)
 
-    def set_value(self, key, value):
+    def set_value(self, key: str, value: Union[int, str, None]):
         self.value_map[key] = value
