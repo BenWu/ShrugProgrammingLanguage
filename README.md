@@ -6,6 +6,22 @@ Interpreter for the Shrug Programming Language
 
 Shrug is a imperative, dynamically-typed, very very high-level, general-purpose programming language
 
+## Usage
+
+##### Requires Python 3.6+
+
+#### Install
+
+```sh
+pip install shrug-lang
+```
+
+#### Start interpreter
+
+```sh
+shruglang
+```
+
 ## Language spec
 
 #### print
