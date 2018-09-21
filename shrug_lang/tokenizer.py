@@ -5,14 +5,14 @@ from shrug_lang.shrug_token import Token, TokenType
 
 class Tokenizer:
     @staticmethod
-    def parse_line(line: str):
+    def parse_line(line: str) -> List[Token]:
         unparsed_tokens = filter(None, Tokenizer.join_strings(line.split(' ')))
         tokens = [Tokenizer.parse_token(unparsed) for unparsed in unparsed_tokens]
         tokens.append(Token(TokenType.EOL))
         return tokens
 
     @staticmethod
-    def join_strings(unparsed_tokens: List[str]):
+    def join_strings(unparsed_tokens: List[str]) -> List[str]:
         """Join strings that have spaces in them"""
         new_unparsed = []
         reading_string = False
@@ -38,7 +38,7 @@ class Tokenizer:
         return new_unparsed
 
     @staticmethod
-    def parse_token(unparsed_token: str):
+    def parse_token(unparsed_token: str) -> Token:
         """Get token from given string"""
         if unparsed_token == '¯\_(ツ)_/¯':
             return Token(TokenType.SHRUG)

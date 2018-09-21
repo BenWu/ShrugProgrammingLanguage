@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any
+from typing import Union
 
 
 class TokenType(Enum):
@@ -15,9 +15,9 @@ class TokenType(Enum):
 @dataclass(init=False)
 class Token:
     type: TokenType
-    value: Any = None
+    value: Union[int, str, None] = None
 
-    def __init__(self, _type: TokenType, value=None):
+    def __init__(self, _type: TokenType, value: Union[int, str, None]=None):
         if not isinstance(_type, TokenType):
             raise TypeError('Token type must be of TokenType')
         must_have_value = {TokenType.NUMBER, TokenType.STRING, TokenType.ID,
