@@ -1,7 +1,7 @@
 from sys import stderr
 
-from shrug_lang import tokenizer
 from shrug_lang.token_parser import TokenError, TokenParser
+from shrug_lang.tokenizer import Tokenizer
 
 # ¯\_(ツ)_/¯
 
@@ -10,7 +10,7 @@ if __name__ == '__main__':
 
     while True:
         line = input()
-        tokens = tokenizer.parse_line(line)
+        tokens = Tokenizer.parse_line(line)
         try:
             for token in tokens:
                 val = parser.next_token(token)
