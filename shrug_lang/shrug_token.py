@@ -17,7 +17,9 @@ class Token:
     type: TokenType
     value: Any = None
 
-    def __init__(self, _type, value=None):
+    def __init__(self, _type: TokenType, value=None):
+        if not isinstance(_type, TokenType):
+            raise TypeError('Token type must be of TokenType')
         must_have_value = {TokenType.NUMBER, TokenType.STRING, TokenType.ID,
                            TokenType.INVALID}
         if _type in must_have_value and value is None:
