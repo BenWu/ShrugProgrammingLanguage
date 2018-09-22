@@ -105,7 +105,7 @@ class Operation:
             raise ValueError(f'Undefined values {val2[1]}')
 
     @staticmethod
-    def check_non_numbers(val1, val2, operation_type):
+    def check_non_numbers(val1, val2, operation_type: str):
         """Raise an error if either value is not an int"""
         val1 = val1[0]
         val2 = val2[0]
