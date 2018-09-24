@@ -37,6 +37,26 @@ class TestTokenizer(unittest.TestCase):
         invalid_id2 = [Token(TokenType.INVALID, 'abc%'), Token(TokenType.EOL)]
         self.assertEqual(invalid_id2, Tokenizer.parse_line(line))
 
+    def test_bool(self):
+        line = 'False'
+        just_false = [Token(TokenType.BOOL, False), Token(TokenType.EOL)]
+        self.assertEqual(just_false, Tokenizer.parse_line(line))
+
+        line = 'True'
+        just_false = [Token(TokenType.BOOL, True), Token(TokenType.EOL)]
+        self.assertEqual(just_false, Tokenizer.parse_line(line))
+
+        line = 'False True True False'
+        just_false = [Token(TokenType.BOOL, False), Token(TokenType.BOOL, True),
+                      Token(TokenType.BOOL, True), Token(TokenType.BOOL, False),
+                      Token(TokenType.EOL)]
+        self.assertEqual(just_false, Tokenizer.parse_line(line))
+
+        line = 'false true'
+        just_false = [Token(TokenType.ID, 'false'), Token(TokenType.ID, 'true'),
+                      Token(TokenType.EOL)]
+        self.assertEqual(just_false, Tokenizer.parse_line(line))
+
     def test_ids(self):
         line = 'a'
         single_id1 = [Token(TokenType.ID, 'a'), Token(TokenType.EOL)]
