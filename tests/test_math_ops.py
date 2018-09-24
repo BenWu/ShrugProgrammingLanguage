@@ -1,7 +1,5 @@
 import unittest
 
-from shrug_lang.operators import MathOp
-
 from .utils import BaseTokenParserTestCase, TokenGenerator
 
 
@@ -242,17 +240,6 @@ class TestMathOperations(BaseTokenParserTestCase):
                   TokenGenerator.get_bool(True), TokenGenerator.get_eol()]
         expected = [None, None, None, None, None, None, None, 0]
         self.assertEqual(expected, self.process_tokens(tokens))
-
-    """ERROR CHECKING"""
-
-    def test_operation_check_undefined(self):
-        MathOp.check_for_undefined((1, 'a'), (2, 'b'))
-        self.assertRaises(ValueError, MathOp.check_for_undefined,
-                          (None, None), (2, 'b'))
-        self.assertRaises(ValueError, MathOp.check_for_undefined,
-                          (1, 'a'), (None, None))
-        self.assertRaises(ValueError, MathOp.check_for_undefined,
-                          (None, None), (None, None))
 
 
 if __name__ == '__main__':

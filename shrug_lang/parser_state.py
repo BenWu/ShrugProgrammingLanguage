@@ -24,6 +24,8 @@ class ParserState(Enum):
     LT = 16
     LTE = 17
 
+    COND = 21
+
 
 class StateTransformer:
     """Calculates next state given a token"""
@@ -83,6 +85,61 @@ class StateTransformer:
             },
 
             ParserState.MODULUS: {
+                TokenType.ID: ParserState.END,
+                TokenType.NUMBER: ParserState.END,
+                TokenType.BOOL: ParserState.END,
+                TokenType.STRING: ParserState.END
+            },
+
+            ParserState.COMPARE: {
+                TokenType.ID: ParserState.EQ,
+                TokenType.NUMBER: ParserState.EQ,
+                TokenType.BOOL: ParserState.EQ,
+                TokenType.STRING: ParserState.EQ,
+                TokenType.SHRUG: ParserState.COND
+            },
+
+            ParserState.EQ: {
+                TokenType.ID: ParserState.END,
+                TokenType.NUMBER: ParserState.END,
+                TokenType.BOOL: ParserState.END,
+                TokenType.STRING: ParserState.END,
+                TokenType.SHRUG: ParserState.NEQ
+            },
+
+            ParserState.NEQ: {
+                TokenType.ID: ParserState.END,
+                TokenType.NUMBER: ParserState.END,
+                TokenType.BOOL: ParserState.END,
+                TokenType.STRING: ParserState.END,
+                TokenType.SHRUG: ParserState.GT
+            },
+
+            ParserState.GT: {
+                TokenType.ID: ParserState.END,
+                TokenType.NUMBER: ParserState.END,
+                TokenType.BOOL: ParserState.END,
+                TokenType.STRING: ParserState.END,
+                TokenType.SHRUG: ParserState.GTE
+            },
+
+            ParserState.GTE: {
+                TokenType.ID: ParserState.END,
+                TokenType.NUMBER: ParserState.END,
+                TokenType.BOOL: ParserState.END,
+                TokenType.STRING: ParserState.END,
+                TokenType.SHRUG: ParserState.LT
+            },
+
+            ParserState.LT: {
+                TokenType.ID: ParserState.END,
+                TokenType.NUMBER: ParserState.END,
+                TokenType.BOOL: ParserState.END,
+                TokenType.STRING: ParserState.END,
+                TokenType.SHRUG: ParserState.LTE
+            },
+
+            ParserState.LTE: {
                 TokenType.ID: ParserState.END,
                 TokenType.NUMBER: ParserState.END,
                 TokenType.BOOL: ParserState.END,

@@ -1,7 +1,7 @@
 from typing import Union
 
 from shrug_lang.errors import TokenError
-from shrug_lang.operators import MathOp
+from shrug_lang.operators import CompOp, MathOp
 from shrug_lang.parser_state import ParserState, StateTransformer
 from shrug_lang.shrug_token import Token, TokenType
 
@@ -14,6 +14,12 @@ class TokenParser:
             ParserState.MULTIPLICATION: MathOp.multiply,
             ParserState.DIVISION: MathOp.divide,
             ParserState.MODULUS: MathOp.modulus,
+            ParserState.EQ: CompOp.eq,
+            ParserState.NEQ: CompOp.neq,
+            ParserState.GT: CompOp.gt,
+            ParserState.GTE: CompOp.gte,
+            ParserState.LT: CompOp.lt,
+            ParserState.LTE: CompOp.lte,
         }
         self.state_transformer = StateTransformer()
         self.value_map = {}
