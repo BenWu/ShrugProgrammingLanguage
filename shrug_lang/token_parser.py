@@ -1,196 +1,14 @@
-from enum import Enum
 from typing import Union
 
+from shrug_lang.errors import TokenError
+from shrug_lang.operators import MathOp
+from shrug_lang.parser_state import ParserState, StateTransformer
 from shrug_lang.shrug_token import Token, TokenType
-
-
-class ParserState(Enum):
-    EMPTY = 0
-    INVALID = 1001
-    END = 1002
-
-    MATH = 1
-    ADDITION = 2
-    SUBTRACTION = 3
-    MULTIPLICATION = 4
-    DIVISION = 5
-    MODULUS = 6
-
-    COMPARE = 11
-    AND = 12
-    OR = 13
-    XOR = 14
-
-
-class TokenError(Exception):
-    pass
-
-
-class StateTransformer:
-    """Calculates next state given a token"""
-
-    def __init__(self):
-        self.state_transformer = {
-            ParserState.EMPTY: {
-                TokenType.ID: ParserState.EMPTY,
-                TokenType.NUMBER: ParserState.END,
-                TokenType.BOOL: ParserState.END,
-                TokenType.STRING: ParserState.END,
-                TokenType.SHRUG: ParserState.MATH
-            },
-
-            ParserState.INVALID: {},
-
-            ParserState.END: {},
-
-            ParserState.MATH: {
-                TokenType.ID: ParserState.ADDITION,
-                TokenType.NUMBER: ParserState.ADDITION,
-                TokenType.BOOL: ParserState.ADDITION,
-                TokenType.STRING: ParserState.ADDITION,
-                TokenType.SHRUG: ParserState.COMPARE
-            },
-
-            ParserState.ADDITION: {
-                TokenType.ID: ParserState.END,
-                TokenType.NUMBER: ParserState.END,
-                TokenType.BOOL: ParserState.END,
-                TokenType.STRING: ParserState.END,
-                TokenType.SHRUG: ParserState.SUBTRACTION
-            },
-
-            ParserState.SUBTRACTION: {
-                TokenType.ID: ParserState.END,
-                TokenType.NUMBER: ParserState.END,
-                TokenType.BOOL: ParserState.END,
-                TokenType.STRING: ParserState.END,
-                TokenType.SHRUG: ParserState.MULTIPLICATION
-            },
-
-            ParserState.MULTIPLICATION: {
-                TokenType.ID: ParserState.END,
-                TokenType.NUMBER: ParserState.END,
-                TokenType.BOOL: ParserState.END,
-                TokenType.STRING: ParserState.END,
-                TokenType.SHRUG: ParserState.DIVISION
-            },
-
-            ParserState.DIVISION: {
-                TokenType.ID: ParserState.END,
-                TokenType.NUMBER: ParserState.END,
-                TokenType.BOOL: ParserState.END,
-                TokenType.STRING: ParserState.END,
-                TokenType.SHRUG: ParserState.MODULUS
-            },
-
-            ParserState.MODULUS: {
-                TokenType.ID: ParserState.END,
-                TokenType.NUMBER: ParserState.END,
-                TokenType.BOOL: ParserState.END,
-                TokenType.STRING: ParserState.END
-            },
-        }
-
-    def next_state(self, state: ParserState, token: Token) -> ParserState:
-        try:
-            return self.state_transformer[state][token.type]
-        except KeyError:
-            raise TokenError(f'Unexpected token {token} at state {state}')
-
-
-class WtfError(Exception):
-    """(For debugging) Should never occur"""
-    pass
-
-
-class MathOp:
-    @staticmethod
-    def check_for_undefined(val1, val2):
-        """Raise an error with correct message if either value is undefined"""
-        if val1[0] is None and val2[0] is None:
-            raise ValueError(f'Undefined values {val1[1]} and {val2[1]}')
-        if val1[0] is None:
-            raise ValueError(f'Undefined values {val1[1]}')
-        if val2[0] is None:
-            raise ValueError(f'Undefined values {val2[1]}')
-
-    @staticmethod
-    def check_non_numbers(val1, val2, operation_type: str):
-        """Raise an error if either value is not an int"""
-        if isinstance(val1, str) and isinstance(val2, str):
-            raise TypeError(
-                f'Unsupported {operation_type} types: string and string')
-        if isinstance(val1, str) and isinstance(val2, int):
-            raise TypeError(
-                f'Unsupported {operation_type} types: str and number')
-        if isinstance(val1, int) and isinstance(val2, str):
-            raise TypeError(
-                f'Unsupported {operation_type} types: number and str')
-
-    @staticmethod
-    def unpack_values(val1, val2):
-        if isinstance(val1[0], bool):
-            val1 = int(val1[0])
-        else:
-            val1 = val1[0]
-        if isinstance(val2[0], bool):
-            val2 = int(val2[0])
-        else:
-            val2 = val2[0]
-        return val1, val2
-
-    @staticmethod
-    def add(val1, val2):
-        MathOp.check_for_undefined(val1, val2)
-        val1, val2 = MathOp.unpack_values(val1, val2)
-        if isinstance(val1, str):
-            if isinstance(val2, str):
-                return val1 + val2
-            if isinstance(val2, int):
-                return val1 + str(val2)
-            raise WtfError
-        if isinstance(val1, int):
-            if isinstance(val2, str):
-                return str(val1) + val2
-            if isinstance(val2, int):
-                return val1 + val2
-            raise WtfError
-        raise WtfError
-
-    @staticmethod
-    def subtract(val1, val2):
-        MathOp.check_for_undefined(val1, val2)
-        val1, val2 = MathOp.unpack_values(val1, val2)
-        MathOp.check_non_numbers(val1, val2, 'subtraction')
-        return val1 - val2
-
-    @staticmethod
-    def multiply(val1, val2):
-        MathOp.check_for_undefined(val1, val2)
-        val1, val2 = MathOp.unpack_values(val1, val2)
-        if isinstance(val1, str) and isinstance(val2, str):
-            raise TypeError('Unsupported multiplication types: '
-                            'string and string')
-        return val1 * val2
-
-    @staticmethod
-    def divide(val1, val2):
-        MathOp.check_for_undefined(val1, val2)
-        val1, val2 = MathOp.unpack_values(val1, val2)
-        MathOp.check_non_numbers(val1, val2, 'division')
-        return val1 // val2
-
-    @staticmethod
-    def modulus(val1, val2):
-        MathOp.check_for_undefined(val1, val2)
-        val1, val2 = MathOp.unpack_values(val1, val2)
-        MathOp.check_non_numbers(val1, val2, 'modulus')
-        return val1 % val2
 
 
 class TokenParser:
     def __init__(self):
-        self.math_operations = {
+        self.operations = {
             ParserState.ADDITION: MathOp.add,
             ParserState.SUBTRACTION: MathOp.subtract,
             ParserState.MULTIPLICATION: MathOp.multiply,
@@ -244,7 +62,8 @@ class TokenParser:
                       token.type == TokenType.BOOL):
                     self.current_value = token.value
 
-            elif self.state == ParserState.MATH:
+            elif (self.state == ParserState.MATH or
+                  self.state == ParserState.COMPARE):
                 if token.type == TokenType.ID:
                     self.value1 = (self.get_value(token.value), token.value)
                 elif (token.type == TokenType.NUMBER or
@@ -252,17 +71,16 @@ class TokenParser:
                       token.type == TokenType.BOOL):
                     self.value1 = (token.value,)
 
-            elif self.state in self.math_operations.keys():
+            elif self.state in self.operations:
+                operation = self.operations[self.state]
                 if token.type == TokenType.ID:
                     self.value2 = (self.get_value(token.value), token.value)
-                    self.current_value = (self.math_operations[self.state]
-                                          (self.value1, self.value2))
+                    self.current_value = operation(self.value1, self.value2)
                 elif (token.type == TokenType.NUMBER or
                       token.type == TokenType.STRING or
                       token.type == TokenType.BOOL):
                     self.value2 = (token.value,)
-                    self.current_value = (self.math_operations[self.state]
-                                          (self.value1, self.value2))
+                    self.current_value = operation(self.value1, self.value2)
 
             self.next_state(token)
 

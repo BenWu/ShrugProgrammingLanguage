@@ -1,6 +1,6 @@
 import unittest
 
-from shrug_lang.token_parser import TokenError
+from shrug_lang.errors import TokenError
 
 from .utils import BaseTokenParserTestCase, TokenGenerator
 

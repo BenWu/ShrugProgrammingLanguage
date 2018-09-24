@@ -1,6 +1,6 @@
 import unittest
 
-from shrug_lang.token_parser import MathOp
+from shrug_lang.operators import MathOp
 
 from .utils import BaseTokenParserTestCase, TokenGenerator
 
