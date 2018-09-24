@@ -19,10 +19,8 @@ def start_interpreter():
                     val = parser.next_token(token)
                     if val is not None:
                         print(val)
-            except TokenError as e:
-                print(f'TokenError: {e}', file=stderr)
-            except TypeError as e:
-                print(f'TypeError: {e}', file=stderr)
+            except (TokenError, ValueError, TypeError, ZeroDivisionError) as e:
+                print(f'{type(e).__name__}: {e}', file=stderr)
     except (EOFError, KeyboardInterrupt):
         print()
 

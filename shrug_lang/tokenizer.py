@@ -46,6 +46,10 @@ class Tokenizer:
                 unparsed_token.startswith('"') and
                 unparsed_token.endswith('"')):
             return Token(TokenType.STRING, unparsed_token[1:-1])
+        if unparsed_token == 'False':
+            return Token(TokenType.BOOL, False)
+        if unparsed_token == 'True':
+            return Token(TokenType.BOOL, True)
         if unparsed_token.isalpha():
             return Token(TokenType.ID, unparsed_token)
         if unparsed_token.isnumeric():
