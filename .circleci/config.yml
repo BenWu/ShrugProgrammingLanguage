@@ -60,9 +60,9 @@ jobs:
     working_directory: ~/ShrugProgrammingLanguage
 
     steps:
-      *test-steps
+      - *test-steps
 
-      run:
+      - run:
         name: coverage
         command: |
           echo 'heelllooo'
