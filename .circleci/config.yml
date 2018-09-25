@@ -12,13 +12,13 @@ workflows:
       - test-3.7.0
 
 jobs:
-  test-3.6.1: &test-template
+  test-3.6.1:
     docker:
       - image: circleci/python:3.6.1
 
     working_directory: ~/ShrugProgrammingLanguage
 
-    steps:
+    steps: &test-steps
       - checkout
 
       - restore_cache:
@@ -54,7 +54,10 @@ jobs:
           path: dist
 
   test-3.7.0:
-    <<: *test-template
-
     docker:
-      - image: circleci/python:3.7.0
+    - image: circleci/python:3.7.0
+
+    working_directory: ~/ShrugProgrammingLanguage
+
+    steps:
+      *test-steps
