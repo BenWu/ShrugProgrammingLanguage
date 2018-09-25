@@ -61,3 +61,8 @@ jobs:
 
     steps:
       *test-steps
+
+      - run:
+        name: coverage
+        command: |
+          echo 'heelllooo'
