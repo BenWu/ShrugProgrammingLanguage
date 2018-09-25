@@ -9,7 +9,6 @@ workflows:
   test:
     jobs:
       - test-3.6.1
-      - test-3.6.6
       - test-3.7.0
 
 jobs:
@@ -46,6 +45,12 @@ jobs:
             make test
 
       - run:
+          name: coverage
+          command: |
+            . venv/bin/activate
+            coveralls
+
+      - run:
           name: make build
           command: |
             . venv/bin/activate
@@ -53,11 +58,6 @@ jobs:
 
       - store_artifacts:
           path: dist
-
-  test-3.6.6:
-    <<: *test-template
-    docker:
-      - image: circleci/python:3.6.6
 
   test-3.7.0:
     <<: *test-template
