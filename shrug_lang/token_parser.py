@@ -23,12 +23,15 @@ class TokenParser:
         }
         self.state_transformer = StateTransformer()
         self.value_map = {}
+
         self.state = ParserState.EMPTY
         self.tokens = []
         self.assign_to = None
         self.current_value = None
         self.value1 = None
         self.value2 = None
+        self.prev_value = None
+        self.current_op = None
 
     def reset_state(self):
         self.state = ParserState.EMPTY
@@ -37,6 +40,8 @@ class TokenParser:
         self.current_value = None
         self.value1 = None
         self.value2 = None
+        self.prev_value = None
+        self.current_op = None
 
     def next_token(self, token: Token):
         try:
@@ -46,7 +51,8 @@ class TokenParser:
                         if self.assign_to:
                             return self.get_value(self.assign_to)
                         return
-                    if self.state == ParserState.END:
+                    if (self.state == ParserState.END or
+                            self.state == ParserState.END_COMP):
                         if self.assign_to:
                             self.set_value(self.assign_to, self.current_value)
                         else:

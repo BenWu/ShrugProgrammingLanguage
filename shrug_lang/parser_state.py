@@ -24,128 +24,145 @@ class ParserState(Enum):
     LT = 16
     LTE = 17
 
-    COND = 21
+    AND = 21
+    OR = 22
+
+    COND = 31
 
 
 class StateTransformer:
     """Calculates next state given a token"""
 
-    def __init__(self):
-        self.state_transformer = {
-            ParserState.EMPTY: {
-                TokenType.ID: ParserState.EMPTY,
-                TokenType.NUMBER: ParserState.END,
-                TokenType.BOOL: ParserState.END,
-                TokenType.STRING: ParserState.END,
-                TokenType.SHRUG: ParserState.MATH
-            },
+    state_transformer = {
+        ParserState.EMPTY: {
+            TokenType.ID: ParserState.EMPTY,
+            TokenType.NUMBER: ParserState.END,
+            TokenType.BOOL: ParserState.END,
+            TokenType.STRING: ParserState.END,
+            TokenType.SHRUG: ParserState.MATH,
+        },
 
-            ParserState.INVALID: {},
+        ParserState.INVALID: {},
 
-            ParserState.END: {},
+        ParserState.END: {},
 
-            ParserState.MATH: {
-                TokenType.ID: ParserState.ADDITION,
-                TokenType.NUMBER: ParserState.ADDITION,
-                TokenType.BOOL: ParserState.ADDITION,
-                TokenType.STRING: ParserState.ADDITION,
-                TokenType.SHRUG: ParserState.COMPARE
-            },
+        ParserState.MATH: {
+            TokenType.ID: ParserState.ADDITION,
+            TokenType.NUMBER: ParserState.ADDITION,
+            TokenType.BOOL: ParserState.ADDITION,
+            TokenType.STRING: ParserState.ADDITION,
+            TokenType.SHRUG: ParserState.COMPARE,
+        },
 
-            ParserState.ADDITION: {
-                TokenType.ID: ParserState.END,
-                TokenType.NUMBER: ParserState.END,
-                TokenType.BOOL: ParserState.END,
-                TokenType.STRING: ParserState.END,
-                TokenType.SHRUG: ParserState.SUBTRACTION
-            },
+        ParserState.ADDITION: {
+            TokenType.ID: ParserState.END,
+            TokenType.NUMBER: ParserState.END,
+            TokenType.BOOL: ParserState.END,
+            TokenType.STRING: ParserState.END,
+            TokenType.SHRUG: ParserState.SUBTRACTION,
+        },
 
-            ParserState.SUBTRACTION: {
-                TokenType.ID: ParserState.END,
-                TokenType.NUMBER: ParserState.END,
-                TokenType.BOOL: ParserState.END,
-                TokenType.STRING: ParserState.END,
-                TokenType.SHRUG: ParserState.MULTIPLICATION
-            },
+        ParserState.SUBTRACTION: {
+            TokenType.ID: ParserState.END,
+            TokenType.NUMBER: ParserState.END,
+            TokenType.BOOL: ParserState.END,
+            TokenType.STRING: ParserState.END,
+            TokenType.SHRUG: ParserState.MULTIPLICATION,
+        },
 
-            ParserState.MULTIPLICATION: {
-                TokenType.ID: ParserState.END,
-                TokenType.NUMBER: ParserState.END,
-                TokenType.BOOL: ParserState.END,
-                TokenType.STRING: ParserState.END,
-                TokenType.SHRUG: ParserState.DIVISION
-            },
+        ParserState.MULTIPLICATION: {
+            TokenType.ID: ParserState.END,
+            TokenType.NUMBER: ParserState.END,
+            TokenType.BOOL: ParserState.END,
+            TokenType.STRING: ParserState.END,
+            TokenType.SHRUG: ParserState.DIVISION,
+        },
 
-            ParserState.DIVISION: {
-                TokenType.ID: ParserState.END,
-                TokenType.NUMBER: ParserState.END,
-                TokenType.BOOL: ParserState.END,
-                TokenType.STRING: ParserState.END,
-                TokenType.SHRUG: ParserState.MODULUS
-            },
+        ParserState.DIVISION: {
+            TokenType.ID: ParserState.END,
+            TokenType.NUMBER: ParserState.END,
+            TokenType.BOOL: ParserState.END,
+            TokenType.STRING: ParserState.END,
+            TokenType.SHRUG: ParserState.MODULUS,
+        },
 
-            ParserState.MODULUS: {
-                TokenType.ID: ParserState.END,
-                TokenType.NUMBER: ParserState.END,
-                TokenType.BOOL: ParserState.END,
-                TokenType.STRING: ParserState.END
-            },
+        ParserState.MODULUS: {
+            TokenType.ID: ParserState.END,
+            TokenType.NUMBER: ParserState.END,
+            TokenType.BOOL: ParserState.END,
+            TokenType.STRING: ParserState.END,
+        },
 
-            ParserState.COMPARE: {
-                TokenType.ID: ParserState.EQ,
-                TokenType.NUMBER: ParserState.EQ,
-                TokenType.BOOL: ParserState.EQ,
-                TokenType.STRING: ParserState.EQ,
-                TokenType.SHRUG: ParserState.COND
-            },
+        ParserState.COMPARE: {
+            TokenType.ID: ParserState.EQ,
+            TokenType.NUMBER: ParserState.EQ,
+            TokenType.BOOL: ParserState.EQ,
+            TokenType.STRING: ParserState.EQ,
+            TokenType.SHRUG: ParserState.COND,
+        },
 
-            ParserState.EQ: {
-                TokenType.ID: ParserState.END,
-                TokenType.NUMBER: ParserState.END,
-                TokenType.BOOL: ParserState.END,
-                TokenType.STRING: ParserState.END,
-                TokenType.SHRUG: ParserState.NEQ
-            },
+        ParserState.EQ: {
+            TokenType.ID: ParserState.AND,
+            TokenType.NUMBER: ParserState.AND,
+            TokenType.BOOL: ParserState.AND,
+            TokenType.STRING: ParserState.AND,
+            TokenType.SHRUG: ParserState.NEQ,
+        },
 
-            ParserState.NEQ: {
-                TokenType.ID: ParserState.END,
-                TokenType.NUMBER: ParserState.END,
-                TokenType.BOOL: ParserState.END,
-                TokenType.STRING: ParserState.END,
-                TokenType.SHRUG: ParserState.GT
-            },
+        ParserState.NEQ: {
+            TokenType.ID: ParserState.AND,
+            TokenType.NUMBER: ParserState.AND,
+            TokenType.BOOL: ParserState.AND,
+            TokenType.STRING: ParserState.AND,
+            TokenType.SHRUG: ParserState.GT,
+        },
 
-            ParserState.GT: {
-                TokenType.ID: ParserState.END,
-                TokenType.NUMBER: ParserState.END,
-                TokenType.BOOL: ParserState.END,
-                TokenType.STRING: ParserState.END,
-                TokenType.SHRUG: ParserState.GTE
-            },
+        ParserState.GT: {
+            TokenType.ID: ParserState.AND,
+            TokenType.NUMBER: ParserState.AND,
+            TokenType.BOOL: ParserState.AND,
+            TokenType.STRING: ParserState.AND,
+            TokenType.SHRUG: ParserState.GTE,
+        },
 
-            ParserState.GTE: {
-                TokenType.ID: ParserState.END,
-                TokenType.NUMBER: ParserState.END,
-                TokenType.BOOL: ParserState.END,
-                TokenType.STRING: ParserState.END,
-                TokenType.SHRUG: ParserState.LT
-            },
+        ParserState.GTE: {
+            TokenType.ID: ParserState.AND,
+            TokenType.NUMBER: ParserState.AND,
+            TokenType.BOOL: ParserState.AND,
+            TokenType.STRING: ParserState.AND,
+            TokenType.SHRUG: ParserState.LT,
+        },
 
-            ParserState.LT: {
-                TokenType.ID: ParserState.END,
-                TokenType.NUMBER: ParserState.END,
-                TokenType.BOOL: ParserState.END,
-                TokenType.STRING: ParserState.END,
-                TokenType.SHRUG: ParserState.LTE
-            },
+        ParserState.LT: {
+            TokenType.ID: ParserState.AND,
+            TokenType.NUMBER: ParserState.AND,
+            TokenType.BOOL: ParserState.AND,
+            TokenType.STRING: ParserState.AND,
+            TokenType.SHRUG: ParserState.LTE,
+        },
 
-            ParserState.LTE: {
-                TokenType.ID: ParserState.END,
-                TokenType.NUMBER: ParserState.END,
-                TokenType.BOOL: ParserState.END,
-                TokenType.STRING: ParserState.END
-            },
+        ParserState.LTE: {
+            TokenType.ID: ParserState.AND,
+            TokenType.NUMBER: ParserState.AND,
+            TokenType.BOOL: ParserState.AND,
+            TokenType.STRING: ParserState.AND,
+        },
+
+        ParserState.AND: {
+            TokenType.SHRUG: ParserState.OR,
+            TokenType.ID: ParserState.END_COMP,
+            TokenType.NUMBER: ParserState.END_COMP,
+            TokenType.BOOL: ParserState.END_COMP,
+            TokenType.STRING: ParserState.END_COMP,
+        },
+
+        ParserState.OR: {
+            TokenType.ID: ParserState.END_COMP,
+            TokenType.NUMBER: ParserState.END_COMP,
+            TokenType.BOOL: ParserState.END_COMP,
+            TokenType.STRING: ParserState.END_COMP,
         }
+    }
 
     def next_state(self, state: ParserState, token: Token) -> ParserState:
         try:
