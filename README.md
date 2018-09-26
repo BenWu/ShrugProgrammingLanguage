@@ -81,24 +81,13 @@ n 1
 
 ¯\\\_(ツ)\_/¯ ¯\\\_(ツ)\_/¯ n ¯\\\_(ツ)\_/¯ ¯\\\_(ツ)\_/¯ ¯\\\_(ツ)\_/¯ ¯\\\_(ツ)\_/¯ ¯\\\_(ツ)\_/¯ m
 
-### logical operators follow a comparator
-
-#### AND
-
-¯\\\_(ツ)\_/¯
-
-#### OR
-
-¯\\\_(ツ)\_/¯ ¯\\\_(ツ)\_/¯
-
-
 ### conditional statements start with ¯\\\_(ツ)\_/¯ ¯\\\_(ツ)\_/¯ ¯\\\_(ツ)\_/¯
 
 ¯\\\_(ツ)\_/¯ ¯\\\_(ツ)\_/¯ ¯\\\_(ツ)\_/¯ comparator 
 	statement1
 ¯\\\_(ツ)\_/¯ ¯\\\_(ツ)\_/¯ ¯\\\_(ツ)\_/¯ comparator2
 	statement2
-¯\\\_(ツ)\_/¯ ¯\\\_(ツ)\_/¯ <- optional default statement
+¯\\\_(ツ)\_/¯ ¯\\\_(ツ)\_/¯ ¯\\\_(ツ)\_/¯ <- optional default statement
 	statement2
 ¯\\\_(ツ)\_/¯ <- end conditional
 
