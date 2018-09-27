@@ -91,15 +91,14 @@ class TestCompParser(BaseTokenParserTestCase):
                   TokenGenerator.get_shrug(), TokenGenerator.get_shrug(),
                   TokenGenerator.get_id('a'), TokenGenerator.get_id('b'),
                   TokenGenerator.get_eol()]
-        expected = [None, None, None, None, None, None, None, None, None, None,
-                    True]
+        expected = [True]
         self.assertEqual(expected, self.process_tokens(tokens))
 
     def test_int_int_neq(self):
         tokens = [TokenGenerator.get_shrug(), TokenGenerator.get_shrug(),
                   TokenGenerator.get_number(4), TokenGenerator.get_shrug(),
                   TokenGenerator.get_number(4), TokenGenerator.get_eol()]
-        expected = [None, None, None, None, None, False]
+        expected = [False]
         self.assertEqual(expected, self.process_tokens(tokens))
 
     def test_int_int_gt(self):
@@ -107,7 +106,7 @@ class TestCompParser(BaseTokenParserTestCase):
                   TokenGenerator.get_number(4), TokenGenerator.get_shrug(),
                   TokenGenerator.get_shrug(), TokenGenerator.get_number(2),
                   TokenGenerator.get_eol()]
-        expected = [None, None, None, None, None, None, True]
+        expected = [True]
         self.assertEqual(expected, self.process_tokens(tokens))
 
     def test_int_int_gte(self):
@@ -115,7 +114,7 @@ class TestCompParser(BaseTokenParserTestCase):
                   TokenGenerator.get_number(4), TokenGenerator.get_shrug(),
                   TokenGenerator.get_shrug(), TokenGenerator.get_shrug(),
                   TokenGenerator.get_number(3), TokenGenerator.get_eol()]
-        expected = [None, None, None, None, None, None, None, True]
+        expected = [True]
         self.assertEqual(expected, self.process_tokens(tokens))
 
     def test_str_str_lt(self):
@@ -124,7 +123,7 @@ class TestCompParser(BaseTokenParserTestCase):
                   TokenGenerator.get_shrug(), TokenGenerator.get_shrug(),
                   TokenGenerator.get_shrug(), TokenGenerator.get_number('abd'),
                   TokenGenerator.get_eol()]
-        expected = [None, None, None, None, None, None, None, None, True]
+        expected = [True]
         self.assertEqual(expected, self.process_tokens(tokens))
 
     def test_str_str_lte(self):
@@ -133,7 +132,7 @@ class TestCompParser(BaseTokenParserTestCase):
                   TokenGenerator.get_shrug(), TokenGenerator.get_shrug(),
                   TokenGenerator.get_shrug(), TokenGenerator.get_shrug(),
                   TokenGenerator.get_number('abc'), TokenGenerator.get_eol()]
-        expected = [None, None, None, None, None, None, None, None, None, True]
+        expected = [True]
         self.assertEqual(expected, self.process_tokens(tokens))
 
 

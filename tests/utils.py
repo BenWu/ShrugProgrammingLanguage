@@ -40,4 +40,6 @@ class BaseTokenParserTestCase(unittest.TestCase):
         self.token_parser = TokenParser()
 
     def process_tokens(self, tokens):
-        return [self.token_parser.next_token(token) for token in tokens]
+        return list(filter(
+            lambda x: x is not None,
+            [self.token_parser.next_token(token) for token in tokens]))
