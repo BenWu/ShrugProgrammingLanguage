@@ -15,31 +15,31 @@ class TestMathOperations(BaseTokenParserTestCase):
                   TokenGenerator.get_eol(),
                   TokenGenerator.get_shrug(), TokenGenerator.get_id('aa'),
                   TokenGenerator.get_id('bb'), TokenGenerator.get_eol()]
-        expected = [None, None, None, None, None, None, None, None, None, 11]
+        expected = [11]
         self.assertEqual(expected, self.process_tokens(tokens))
 
     def test_str_str_addition(self):
         tokens = [TokenGenerator.get_shrug(), TokenGenerator.get_string('ab'),
                   TokenGenerator.get_string('cd'), TokenGenerator.get_eol()]
-        expected = [None, None, None, 'abcd']
+        expected = ['abcd']
         self.assertEqual(expected, self.process_tokens(tokens))
 
     def test_int_int_addition(self):
         tokens = [TokenGenerator.get_shrug(), TokenGenerator.get_number(12),
                   TokenGenerator.get_number(3), TokenGenerator.get_eol()]
-        expected = [None, None, None, 15]
+        expected = [15]
         self.assertEqual(expected, self.process_tokens(tokens))
 
     def test_str_int_addition(self):
         tokens = [TokenGenerator.get_shrug(), TokenGenerator.get_number(12),
                   TokenGenerator.get_string('abc'), TokenGenerator.get_eol()]
-        expected = [None, None, None, '12abc']
+        expected = ['12abc']
         self.assertEqual(expected, self.process_tokens(tokens))
 
     def test_int_str_addition(self):
         tokens = [TokenGenerator.get_shrug(), TokenGenerator.get_string('abc'),
                   TokenGenerator.get_number(34), TokenGenerator.get_eol()]
-        expected = [None, None, None, 'abc34']
+        expected = ['abc34']
         self.assertEqual(expected, self.process_tokens(tokens))
 
     def test_assign_addition(self):
@@ -47,13 +47,13 @@ class TestMathOperations(BaseTokenParserTestCase):
                   TokenGenerator.get_shrug(), TokenGenerator.get_number(12),
                   TokenGenerator.get_number(3), TokenGenerator.get_eol(),
                   TokenGenerator.get_id('a'), TokenGenerator.get_eol()]
-        expected = [None, None, None, None, None, None, 15]
+        expected = [15]
         self.assertEqual(expected, self.process_tokens(tokens))
 
     def test_bool_bool_addition(self):
         tokens = [TokenGenerator.get_shrug(), TokenGenerator.get_bool(True),
                   TokenGenerator.get_bool(True), TokenGenerator.get_eol()]
-        expected = [None, None, None, 2]
+        expected = [2]
         self.assertEqual(expected, self.process_tokens(tokens))
 
     """SUBTRACTION"""
@@ -62,7 +62,7 @@ class TestMathOperations(BaseTokenParserTestCase):
         tokens = [TokenGenerator.get_shrug(), TokenGenerator.get_number(12),
                   TokenGenerator.get_shrug(), TokenGenerator.get_number(3),
                   TokenGenerator.get_eol()]
-        expected = [None, None, None, None, 9]
+        expected = [9]
         self.assertEqual(expected, self.process_tokens(tokens))
 
     def test_str_str_subtraction(self):
@@ -88,14 +88,14 @@ class TestMathOperations(BaseTokenParserTestCase):
                   TokenGenerator.get_number(12), TokenGenerator.get_shrug(),
                   TokenGenerator.get_number(3), TokenGenerator.get_eol(),
                   TokenGenerator.get_id('a'), TokenGenerator.get_eol()]
-        expected = [None, None, None, None, None, None, None, 9]
+        expected = [9]
         self.assertEqual(expected, self.process_tokens(tokens))
 
     def test_bool_bool_subtraction(self):
         tokens = [TokenGenerator.get_shrug(), TokenGenerator.get_bool(False),
                   TokenGenerator.get_shrug(), TokenGenerator.get_bool(True),
                   TokenGenerator.get_eol()]
-        expected = [None, None, None, None, -1]
+        expected = [-1]
         self.assertEqual(expected, self.process_tokens(tokens))
 
     """MULTIPLICATION"""
@@ -104,7 +104,7 @@ class TestMathOperations(BaseTokenParserTestCase):
         tokens = [TokenGenerator.get_shrug(), TokenGenerator.get_number(13),
                   TokenGenerator.get_shrug(), TokenGenerator.get_shrug(),
                   TokenGenerator.get_number(4), TokenGenerator.get_eol()]
-        expected = [None, None, None, None, None, 52]
+        expected = [52]
         self.assertEqual(expected, self.process_tokens(tokens))
 
     def test_str_str_multiplication(self):
@@ -117,14 +117,14 @@ class TestMathOperations(BaseTokenParserTestCase):
         tokens = [TokenGenerator.get_shrug(), TokenGenerator.get_number(3),
                   TokenGenerator.get_shrug(), TokenGenerator.get_shrug(),
                   TokenGenerator.get_string('abc'), TokenGenerator.get_eol()]
-        expected = [None, None, None, None, None, 'abcabcabc']
+        expected = ['abcabcabc']
         self.assertEqual(expected, self.process_tokens(tokens))
 
     def test_int_str_multiplication(self):
         tokens = [TokenGenerator.get_shrug(), TokenGenerator.get_string('abc'),
                   TokenGenerator.get_shrug(), TokenGenerator.get_shrug(),
                   TokenGenerator.get_number(2), TokenGenerator.get_eol()]
-        expected = [None, None, None, None, None, 'abcabc']
+        expected = ['abcabc']
         self.assertEqual(expected, self.process_tokens(tokens))
 
     def test_assign_multiplication(self):
@@ -133,14 +133,14 @@ class TestMathOperations(BaseTokenParserTestCase):
                   TokenGenerator.get_shrug(), TokenGenerator.get_number(3),
                   TokenGenerator.get_eol(), TokenGenerator.get_id('a'),
                   TokenGenerator.get_eol()]
-        expected = [None, None, None, None, None, None, None, None, 36]
+        expected = [36]
         self.assertEqual(expected, self.process_tokens(tokens))
 
     def test_bool_bool_multiplication(self):
         tokens = [TokenGenerator.get_shrug(), TokenGenerator.get_bool(False),
                   TokenGenerator.get_shrug(), TokenGenerator.get_shrug(),
                   TokenGenerator.get_bool(True), TokenGenerator.get_eol()]
-        expected = [None, None, None, None, None, 0]
+        expected = [0]
         self.assertEqual(expected, self.process_tokens(tokens))
 
     """DIVISION"""
@@ -150,7 +150,7 @@ class TestMathOperations(BaseTokenParserTestCase):
                   TokenGenerator.get_shrug(), TokenGenerator.get_shrug(),
                   TokenGenerator.get_shrug(), TokenGenerator.get_number(4),
                   TokenGenerator.get_eol()]
-        expected = [None, None, None, None, None, None, 3]
+        expected = [3]
         self.assertEqual(expected, self.process_tokens(tokens))
 
     def test_str_str_division(self):
@@ -180,7 +180,7 @@ class TestMathOperations(BaseTokenParserTestCase):
                   TokenGenerator.get_shrug(), TokenGenerator.get_shrug(),
                   TokenGenerator.get_number(3), TokenGenerator.get_eol(),
                   TokenGenerator.get_id('a'), TokenGenerator.get_eol()]
-        expected = [None, None, None, None, None, None, None, None, None, 4]
+        expected = [4]
         self.assertEqual(expected, self.process_tokens(tokens))
 
     def test_bool_bool_division(self):
@@ -188,7 +188,7 @@ class TestMathOperations(BaseTokenParserTestCase):
                   TokenGenerator.get_shrug(), TokenGenerator.get_shrug(),
                   TokenGenerator.get_shrug(), TokenGenerator.get_bool(True),
                   TokenGenerator.get_eol()]
-        expected = [None, None, None, None, None, None, 1]
+        expected = [1]
         self.assertEqual(expected, self.process_tokens(tokens))
 
     """MODULUS"""
@@ -198,7 +198,7 @@ class TestMathOperations(BaseTokenParserTestCase):
                   TokenGenerator.get_shrug(), TokenGenerator.get_shrug(),
                   TokenGenerator.get_shrug(), TokenGenerator.get_shrug(),
                   TokenGenerator.get_number(5), TokenGenerator.get_eol()]
-        expected = [None, None, None, None, None, None, None, 2]
+        expected = [2]
         self.assertEqual(expected, self.process_tokens(tokens))
 
     def test_str_str_modulus(self):
@@ -229,8 +229,7 @@ class TestMathOperations(BaseTokenParserTestCase):
                   TokenGenerator.get_shrug(), TokenGenerator.get_number(3),
                   TokenGenerator.get_eol(), TokenGenerator.get_id('a'),
                   TokenGenerator.get_eol()]
-        expected = [None, None, None, None, None, None,
-                    None, None, None, None, 1]
+        expected = [1]
         self.assertEqual(expected, self.process_tokens(tokens))
 
     def test_bool_bool_modulus(self):
@@ -238,7 +237,7 @@ class TestMathOperations(BaseTokenParserTestCase):
                   TokenGenerator.get_shrug(), TokenGenerator.get_shrug(),
                   TokenGenerator.get_shrug(), TokenGenerator.get_shrug(),
                   TokenGenerator.get_bool(True), TokenGenerator.get_eol()]
-        expected = [None, None, None, None, None, None, None, 0]
+        expected = [0]
         self.assertEqual(expected, self.process_tokens(tokens))
 
 
