@@ -37,7 +37,8 @@ class StateTransformer:
                 TokenType.NUMBER: ParserState.END,
                 TokenType.BOOL: ParserState.END,
                 TokenType.STRING: ParserState.END,
-                TokenType.SHRUG: ParserState.MATH
+                TokenType.SHRUG: ParserState.MATH,
+                TokenType.INDENT: ParserState.EMPTY,
             },
 
             ParserState.INVALID: {},
@@ -145,6 +146,14 @@ class StateTransformer:
                 TokenType.BOOL: ParserState.END,
                 TokenType.STRING: ParserState.END
             },
+
+            ParserState.COND: {
+                TokenType.ID: ParserState.END,
+                TokenType.NUMBER: ParserState.END,
+                TokenType.BOOL: ParserState.END,
+                TokenType.STRING: ParserState.END,
+                TokenType.SHRUG: ParserState.MATH
+            }
         }
 
     def next_state(self, state: ParserState, token: Token) -> ParserState:

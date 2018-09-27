@@ -29,6 +29,12 @@ class TokenParser:
         self.current_value = None
         self.value1 = None
         self.value2 = None
+        self.in_cond = False
+        self.skip_line = False
+
+        # Not reset after line
+        self.indent = 0
+        self.skip_indented = False  # skip lines that are indented +1
 
     def reset_state(self):
         self.state = ParserState.EMPTY
@@ -37,6 +43,8 @@ class TokenParser:
         self.current_value = None
         self.value1 = None
         self.value2 = None
+        self.in_cond = False
+        self.skip_line = False
 
     def next_token(self, token: Token):
         try:
@@ -49,6 +57,11 @@ class TokenParser:
                     if self.state == ParserState.END:
                         if self.assign_to:
                             self.set_value(self.assign_to, self.current_value)
+                        elif self.in_cond:
+                            if self.current_value:
+                                self.indent += 1
+                            else:
+                                self.skip_indented = True
                         else:
                             return self.current_value
                         return
@@ -60,7 +73,21 @@ class TokenParser:
             if token.type == TokenType.INVALID:
                 raise TokenError(f'Invalid token {token.value}')
 
-            if self.state == ParserState.EMPTY:
+            if self.skip_line:
+                pass
+
+            elif token.type == TokenType.INDENT:
+                if token.value == self.indent:
+                    if self.skip_indented:
+                        self.skip_indented = False
+                elif token.value < self.indent:
+                    self.indent = token.value
+                elif token.value > self.indent and self.skip_indented:
+                    self.skip_line = True
+                else:
+                    raise TokenError('Unexpected indentation')
+
+            elif self.state == ParserState.EMPTY:
                 if token.type == TokenType.ID:
                     self.assign_to = token.value
                 elif (token.type == TokenType.NUMBER or
@@ -87,6 +114,19 @@ class TokenParser:
                       token.type == TokenType.BOOL):
                     self.value2 = (token.value,)
                     self.current_value = operation(self.value1, self.value2)
+
+            if self.state == ParserState.COND:
+                if token.type == TokenType.ID:
+                    self.current_value = self.get_value(token.value)
+                    if self.assign_to:
+                        raise TokenError('Cannot assign conditional statement')
+                elif (token.type == TokenType.NUMBER or
+                      token.type == TokenType.STRING or
+                      token.type == TokenType.BOOL):
+                    self.current_value = token.value
+                    if self.assign_to:
+                        raise TokenError('Cannot assign conditional statement')
+                self.in_cond = True
 
             self.next_state(token)
 

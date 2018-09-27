@@ -33,6 +33,10 @@ class TokenGenerator:
     def get_invalid(value='invalid'):
         return Token(TokenType.INVALID, value)
 
+    @staticmethod
+    def get_indent(value=0):
+        return Token(TokenType.INDENT, value)
+
 
 class BaseTokenParserTestCase(unittest.TestCase):
     """Base class for token parser test cases"""
