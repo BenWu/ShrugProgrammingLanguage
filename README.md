@@ -83,25 +83,9 @@ n 1
 
 ### conditional statements start with ¯\\\_(ツ)\_/¯ ¯\\\_(ツ)\_/¯ ¯\\\_(ツ)\_/¯
 
-¯\\\_(ツ)\_/¯ ¯\\\_(ツ)\_/¯ ¯\\\_(ツ)\_/¯ comparator 
-	statement1
-¯\\\_(ツ)\_/¯ ¯\\\_(ツ)\_/¯ ¯\\\_(ツ)\_/¯ comparator2
-	statement2
-¯\\\_(ツ)\_/¯ ¯\\\_(ツ)\_/¯ ¯\\\_(ツ)\_/¯ <- optional default statement
-	statement2
-¯\\\_(ツ)\_/¯ <- end conditional
+¯\\\_(ツ)\_/¯ ¯\\\_(ツ)\_/¯ ¯\\\_(ツ)\_/¯ condition 
 
-### iteration starts with ¯\\\_(ツ)\_/¯ ¯\\\_(ツ)\_/¯ ¯\\\_(ツ)\_/¯ ¯\\\_(ツ)\_/¯
+    statement
 
-¯\\\_(ツ)\_/¯ ¯\\\_(ツ)\_/¯ ¯\\\_(ツ)\_/¯ ¯\\\_(ツ)\_/¯ n <- run statement n times
-	statement
-¯\\\_(ツ)\_/¯ <- end iteration
-
-¯\\\_(ツ)\_/¯ ¯\\\_(ツ)\_/¯ ¯\\\_(ツ)\_/¯ ¯\\\_(ツ)\_/¯ x arr <- for each x in arr
-	statement
-¯\\\_(ツ)\_/¯ <- end iteration
-
-¯\\\_(ツ)\_/¯ ¯\\\_(ツ)\_/¯ ¯\\\_(ツ)\_/¯ ¯\\\_(ツ)\_/¯ cond <- run statement while cond is true
-	statement
-¯\\\_(ツ)\_/¯ <- end iteration
-
+Statement is indented by one more than conditional line
+No alternate conditions (elif/else)
