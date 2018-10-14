@@ -39,6 +39,7 @@ class StateTransformer:
                 TokenType.STRING: ParserState.END,
                 TokenType.SHRUG: ParserState.MATH,
                 TokenType.INDENT: ParserState.EMPTY,
+                TokenType.COMMENT: ParserState.EMPTY,
             },
 
             ParserState.INVALID: {},

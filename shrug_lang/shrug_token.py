@@ -12,6 +12,7 @@ class TokenType(Enum):
     INVALID = 6
     BOOL = 7
     INDENT = 8
+    COMMENT = 9
 
 
 @dataclass(init=False)

@@ -10,10 +10,19 @@ class TestTokenizer(unittest.TestCase):
     def test_empty_line(self):
         line = ''
         self.assertEqual([Token(TokenType.INDENT, 0), Token(TokenType.EOL)],
-                          Tokenizer.parse_line(line))
+                         Tokenizer.parse_line(line))
 
         line = '     '
         self.assertEqual([Token(TokenType.INDENT, 5), Token(TokenType.EOL)],
+                         Tokenizer.parse_line(line))
+
+    def test_comment(self):
+        line = '# fsd'
+        self.assertEqual([Token(TokenType.COMMENT)],
+                         Tokenizer.parse_line(line))
+
+        line = ' #'
+        self.assertEqual([Token(TokenType.COMMENT)],
                          Tokenizer.parse_line(line))
 
     def test_shrug(self):

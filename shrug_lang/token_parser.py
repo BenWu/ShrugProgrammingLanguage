@@ -31,6 +31,7 @@ class TokenParser:
         self.value2 = None
         self.in_cond = False
         self.skip_line = False
+        self.comment = False
 
         # Not reset after line
         self.indent = 0
@@ -45,6 +46,7 @@ class TokenParser:
         self.value2 = None
         self.in_cond = False
         self.skip_line = False
+        self.comment = False
 
     def next_token(self, token: Token):
         try:
@@ -69,6 +71,10 @@ class TokenParser:
                     self.reset_state()
                 # Not in valid state to end line
                 raise TokenError('Unexpected end-of-line')
+
+            if token.type == TokenType.COMMENT:
+                self.comment = True
+                return
 
             if token.type == TokenType.INVALID:
                 raise TokenError(f'Invalid token {token.value}')

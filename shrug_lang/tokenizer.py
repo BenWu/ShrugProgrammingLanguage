@@ -6,13 +6,15 @@ from shrug_lang.shrug_token import Token, TokenType
 class Tokenizer:
     @staticmethod
     def parse_line(line: str) -> List[Token]:
-        unparsed_tokens = Tokenizer.join_strings(line.split(' '))
+        if line.lstrip().startswith('#'):
+            return [Token(TokenType.COMMENT)]
         indent_size = 0
-        if len(unparsed_tokens) > 1:
-            for c in unparsed_tokens[1:]:
-                if c == '':
-                    indent_size += 1
-        unparsed_tokens = filter(None, unparsed_tokens)
+        for c in line:
+            if c == ' ':
+                indent_size += 1
+            else:
+                break
+        unparsed_tokens = filter(None, Tokenizer.join_strings(line.split(' ')))
         tokens = [Token(TokenType.INDENT, indent_size)]
         tokens += [Tokenizer.parse_token(unparsed)
                    for unparsed in unparsed_tokens]
