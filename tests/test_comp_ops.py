@@ -111,10 +111,10 @@ class TestCompParser(BaseTokenParserTestCase):
 
     def test_int_int_gte(self):
         tokens = [TokenGenerator.get_shrug(), TokenGenerator.get_shrug(),
-                  TokenGenerator.get_number(4), TokenGenerator.get_shrug(),
+                  TokenGenerator.get_number(3), TokenGenerator.get_shrug(),
                   TokenGenerator.get_shrug(), TokenGenerator.get_shrug(),
-                  TokenGenerator.get_number(3), TokenGenerator.get_eol()]
-        expected = [True]
+                  TokenGenerator.get_number(4), TokenGenerator.get_eol()]
+        expected = [False]
         self.assertEqual(expected, self.process_tokens(tokens))
 
     def test_str_str_lt(self):
