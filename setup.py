@@ -13,7 +13,7 @@ install_requires = [
 
 setup(
     name='shrug-lang',
-    version='0.0.1',
+    version='0.0.3',
     description='Interpreter for the Shrug Programming Language',
     long_description=read_file('README.md'),
     long_description_content_type='text/markdown',
@@ -32,6 +32,6 @@ setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3 :: Only',
-        'Development Status :: 2 - Pre-Alpha',
+        'Development Status :: 3 - Alpha',
     ]
 )
