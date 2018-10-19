@@ -1,0 +1,51 @@
+%YAML 1.2
+---
+# See http://www.sublimetext.com/docs/3/syntax.html
+name: Shrug
+file_extensions:
+  - shrug
+scope: source.shrug
+contexts:
+  main:
+    # Strings begin and end with quotes, and use backslashes as an escape
+    # character
+    - match: '"'
+      scope: punctuation.definition.string.begin.shrug
+      push: double_quoted_string
+
+    # Comments begin with a '#' and finish at the end of the line
+    - match: '#'
+      scope: punctuation.definition.comment.shrug
+      push: line_comment
+
+    - match: '¯\\_\(ツ\)_\/¯'
+      scope: keyword.control.shrug
+      push: even_shrug
+
+    # Numbers and boolean
+    - match: '\b((-)?[0-9.]+)\b'
+      scope: constant.numeric.shrug
+
+    # Numbers and boolean
+    - match: '\b(True|False)\b'
+      scope: constant.language.shrug
+
+    # Variable
+    - match: '\b([A-Za-z])\b'
+      scope: variable.other.shrug
+
+  double_quoted_string:
+    - meta_scope: string.quoted.double.shrug
+    - match: '"'
+      scope: punctuation.definition.string.end.shrug
+      pop: true
+
+  line_comment:
+    - meta_scope: comment.line.shrug
+    - match: $
+      pop: true
+
+  even_shrug:
+    - match: '( ¯\\_\(ツ\)_\/¯)|( )'
+      scope: keyword.operator.shrug
+      pop: true

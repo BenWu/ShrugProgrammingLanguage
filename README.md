@@ -67,4 +67,10 @@ cat program.shrug | shruglang
 
 ## Language spec
 
-Language spec can be found [here](/language_spec)
+Language spec can be found [here](language_spec)
+
+## Syntax highlighting
+
+Syntax highlighting for sublime can be found [here](syntax_highlighting/shrug.sublime-syntax)
+
+![Shrug sublime syntax highlighting](images/shrug_sublime_syntax.png)
