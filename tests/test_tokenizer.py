@@ -45,6 +45,12 @@ class TestTokenizer(unittest.TestCase):
                           Token(TokenType.EOL)]
         self.assertEqual(single_number2, Tokenizer.parse_line(line))
 
+        line = '-12'
+        single_number3 = [Token(TokenType.INDENT, 0),
+                          Token(TokenType.NUMBER, -12),
+                          Token(TokenType.EOL)]
+        self.assertEqual(single_number3, Tokenizer.parse_line(line))
+
         line = 'dfs3'
         invalid_id1 = [Token(TokenType.INDENT, 0),
                        Token(TokenType.INVALID, 'dfs3'),

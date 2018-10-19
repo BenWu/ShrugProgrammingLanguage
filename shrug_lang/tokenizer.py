@@ -62,6 +62,8 @@ class Tokenizer:
             return Token(TokenType.BOOL, True)
         if unparsed_token.isalpha():
             return Token(TokenType.ID, unparsed_token)
-        if unparsed_token.isnumeric():
+        if (unparsed_token.isnumeric() or
+                (unparsed_token.startswith('-') and
+                 unparsed_token[1:].isnumeric())):
             return Token(TokenType.NUMBER, int(unparsed_token))
         return Token(TokenType.INVALID, unparsed_token)
